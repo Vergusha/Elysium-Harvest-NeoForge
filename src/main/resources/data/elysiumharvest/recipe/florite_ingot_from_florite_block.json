@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+        "elysiumharvest:florite_block"
+    ],
+    "result": {
+        "count": 9,
+        "id": "elysiumharvest:florite_ingot"
+    }
+}

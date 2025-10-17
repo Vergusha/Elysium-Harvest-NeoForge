@@ -1,0 +1,19 @@
+# Build files
+/build/
+/out/
+
+# IDE
+/.idea/
+/*.iml
+
+# Gradle
+/.gradle/
+/gradlew
+/gradlew.bat
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

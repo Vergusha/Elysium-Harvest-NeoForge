@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "building",
+    "pattern": [
+        "###",
+        "###",
+        "###"
+    ],
+    "key": {
+        "#": "elysiumharvest:florite_ingot"
+    },
+    "result": {
+        "id": "elysiumharvest:florite_block"
+    }
+}

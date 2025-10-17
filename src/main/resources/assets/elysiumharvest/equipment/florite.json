@@ -1,0 +1,14 @@
+{
+    "layers": {
+        "humanoid": [
+            {
+                "texture": "elysiumharvest:florite"
+            }
+        ],
+        "humanoid_leggings": [
+            {
+                "texture": "elysiumharvest:florite"
+            }
+        ]
+    }
+}
