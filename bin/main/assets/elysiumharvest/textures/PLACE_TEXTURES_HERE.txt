@@ -1,0 +1,14 @@
+РАЗМЕСТИТЕ ТЕКСТУРЫ В СЛЕДУЮЩИХ МЕСТАХ:
+
+item/florite_sword.png
+item/florite_pickaxe.png
+item/florite_axe.png
+item/florite_shovel.png
+item/florite_hoe.png
+item/florite_helmet.png
+item/florite_chestplate.png
+item/florite_leggings.png
+item/florite_boots.png
+
+entity/equipment/humanoid/florite.png
+entity/equipment/humanoid_leggings/florite.png

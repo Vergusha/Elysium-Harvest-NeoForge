@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "FFF",
+    "FFF",
+    "FFF"
+  ],
+  "key": {
+    "F": {
+      "item": "elysiumharvest:florite"
+    }
+  },
+  "result": {
+    "item": "elysiumharvest:florite_block",
+    "count": 1
+  }
+}

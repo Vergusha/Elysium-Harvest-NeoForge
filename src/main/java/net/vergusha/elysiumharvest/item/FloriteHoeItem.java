@@ -1,0 +1,39 @@
+package net.vergusha.elysiumharvest.item;
+
+import javax.annotation.Nonnull;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
+
+public class FloriteHoeItem extends Item {
+    public FloriteHoeItem(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public boolean canPerformAction(@Nonnull ItemStack stack, @Nonnull ItemAbility itemAbility) {
+        return ItemAbilities.DEFAULT_HOE_ACTIONS.contains(itemAbility);
+    }
+
+    @Override
+    public @Nonnull InteractionResult useOn(@Nonnull UseOnContext context) {
+        // Try each hoe ability (tilling)
+        for (ItemAbility ability : ItemAbilities.DEFAULT_HOE_ACTIONS) {
+            var currentState = context.getLevel().getBlockState(context.getClickedPos());
+            var result = currentState.getToolModifiedState(context, ability, false);
+            if (result != null && !result.equals(currentState)) {
+                context.getLevel().setBlock(context.getClickedPos(), result, 11);
+                var player = context.getPlayer();
+                if (player != null) {
+                    context.getItemInHand().hurtAndBreak(1, player,
+                            player.getEquipmentSlotForItem(context.getItemInHand()));
+                }
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return InteractionResult.PASS;
+    }
+}
