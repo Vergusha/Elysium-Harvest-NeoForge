@@ -18,3 +18,6 @@
 /gamemode creative
 /gamemode survivalw
 /gamemode survival
+/time set 0
+/gamemode creative
+/gamemode survival

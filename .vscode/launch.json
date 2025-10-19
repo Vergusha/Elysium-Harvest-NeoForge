@@ -6,19 +6,19 @@
       "request": "launch",
       "name": "Client",
       "presentation": {
-        "group": "Mod Development - elysiumharvest-neoforge-1.21.10",
+        "group": "Mod Development - Elysium-Harvest-NeoForge",
         "order": 0
       },
-      "projectName": "elysiumharvest-neoforge-1.21.10",
+      "projectName": "Elysium-Harvest-NeoForge",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@/home/vergusha/NeoForge/elysiumharvest-neoforge-1.21.10/build/moddev/clientRunProgramArgs.txt"
+        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\clientRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@/home/vergusha/NeoForge/elysiumharvest-neoforge-1.21.10/build/moddev/clientRunVmArgs.txt",
-        "-Dfml.modFolders\u003delysiumharvest%%/home/vergusha/NeoForge/elysiumharvest-neoforge-1.21.10/bin/main"
+        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\clientRunVmArgs.txt",
+        "-Dfml.modFolders\u003delysiumharvest%%D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\bin\\main"
       ],
-      "cwd": "${workspaceFolder}/run",
+      "cwd": "${workspaceFolder}\\run",
       "env": {},
       "console": "internalConsole",
       "shortenCommandLine": "none"
@@ -28,19 +28,19 @@
       "request": "launch",
       "name": "Data",
       "presentation": {
-        "group": "Mod Development - elysiumharvest-neoforge-1.21.10",
+        "group": "Mod Development - Elysium-Harvest-NeoForge",
         "order": 1
       },
-      "projectName": "elysiumharvest-neoforge-1.21.10",
+      "projectName": "Elysium-Harvest-NeoForge",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@/home/vergusha/NeoForge/elysiumharvest-neoforge-1.21.10/build/moddev/dataRunProgramArgs.txt"
+        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\dataRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@/home/vergusha/NeoForge/elysiumharvest-neoforge-1.21.10/build/moddev/dataRunVmArgs.txt",
-        "-Dfml.modFolders\u003delysiumharvest%%/home/vergusha/NeoForge/elysiumharvest-neoforge-1.21.10/bin/main"
+        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\dataRunVmArgs.txt",
+        "-Dfml.modFolders\u003delysiumharvest%%D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\bin\\main"
       ],
-      "cwd": "${workspaceFolder}/run",
+      "cwd": "${workspaceFolder}\\run",
       "env": {},
       "console": "internalConsole",
       "shortenCommandLine": "none"
@@ -50,19 +50,19 @@
       "request": "launch",
       "name": "GameTestServer",
       "presentation": {
-        "group": "Mod Development - elysiumharvest-neoforge-1.21.10",
+        "group": "Mod Development - Elysium-Harvest-NeoForge",
         "order": 2
       },
-      "projectName": "elysiumharvest-neoforge-1.21.10",
+      "projectName": "Elysium-Harvest-NeoForge",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@/home/vergusha/NeoForge/elysiumharvest-neoforge-1.21.10/build/moddev/gameTestServerRunProgramArgs.txt"
+        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\gameTestServerRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@/home/vergusha/NeoForge/elysiumharvest-neoforge-1.21.10/build/moddev/gameTestServerRunVmArgs.txt",
-        "-Dfml.modFolders\u003delysiumharvest%%/home/vergusha/NeoForge/elysiumharvest-neoforge-1.21.10/bin/main"
+        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\gameTestServerRunVmArgs.txt",
+        "-Dfml.modFolders\u003delysiumharvest%%D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\bin\\main"
       ],
-      "cwd": "${workspaceFolder}/run",
+      "cwd": "${workspaceFolder}\\run",
       "env": {},
       "console": "internalConsole",
       "shortenCommandLine": "none"
@@ -72,19 +72,19 @@
       "request": "launch",
       "name": "Server",
       "presentation": {
-        "group": "Mod Development - elysiumharvest-neoforge-1.21.10",
+        "group": "Mod Development - Elysium-Harvest-NeoForge",
         "order": 3
       },
-      "projectName": "elysiumharvest-neoforge-1.21.10",
+      "projectName": "Elysium-Harvest-NeoForge",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@/home/vergusha/NeoForge/elysiumharvest-neoforge-1.21.10/build/moddev/serverRunProgramArgs.txt"
+        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\serverRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@/home/vergusha/NeoForge/elysiumharvest-neoforge-1.21.10/build/moddev/serverRunVmArgs.txt",
-        "-Dfml.modFolders\u003delysiumharvest%%/home/vergusha/NeoForge/elysiumharvest-neoforge-1.21.10/bin/main"
+        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\serverRunVmArgs.txt",
+        "-Dfml.modFolders\u003delysiumharvest%%D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\bin\\main"
       ],
-      "cwd": "${workspaceFolder}/run",
+      "cwd": "${workspaceFolder}\\run",
       "env": {},
       "console": "internalConsole",
       "shortenCommandLine": "none"
