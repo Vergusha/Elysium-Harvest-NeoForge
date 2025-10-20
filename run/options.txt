@@ -16,7 +16,7 @@ fullscreen:false
 gamma:0.5
 graphicsMode:1
 guiScale:2
-maxFps:120
+maxFps:60
 inactivityFpsLimit:"afk"
 mipmapLevels:4
 narrator:0
@@ -24,8 +24,8 @@ particles:0
 reducedDebugInfo:false
 renderClouds:"true"
 cloudRange:128
-renderDistance:12
-simulationDistance:12
+renderDistance:7
+simulationDistance:9
 screenEffectScale:1.0
 soundDevice:""
 autoJump:false
