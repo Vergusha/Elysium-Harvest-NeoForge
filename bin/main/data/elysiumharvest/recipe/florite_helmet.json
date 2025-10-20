@@ -7,11 +7,10 @@
         "   "
     ],
     "key": {
-        "F": {
-            "item": "elysiumharvest:florite_ingot"
-        }
+        "F": "elysiumharvest:florite_ingot"
     },
     "result": {
-        "id": "elysiumharvest:florite_helmet"
+        "id": "elysiumharvest:florite_helmet",
+        "count": 1
     }
 }

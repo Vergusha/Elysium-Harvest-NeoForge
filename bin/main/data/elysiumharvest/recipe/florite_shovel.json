@@ -7,14 +7,11 @@
         " S "
     ],
     "key": {
-        "F": {
-            "item": "elysiumharvest:florite_ingot"
-        },
-        "S": {
-            "item": "minecraft:stick"
-        }
+        "F": "elysiumharvest:florite_ingot",
+        "S": "minecraft:stick"
     },
     "result": {
-        "id": "elysiumharvest:florite_shovel"
+        "id": "elysiumharvest:florite_shovel",
+        "count": 1
     }
 }

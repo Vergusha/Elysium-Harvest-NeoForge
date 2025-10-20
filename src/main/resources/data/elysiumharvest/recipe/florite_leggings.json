@@ -7,11 +7,10 @@
         "F F"
     ],
     "key": {
-        "F": {
-            "item": "elysiumharvest:florite_ingot"
-        }
+        "F": "elysiumharvest:florite_ingot"
     },
     "result": {
-        "id": "elysiumharvest:florite_leggings"
+        "id": "elysiumharvest:florite_leggings",
+        "count": 1
     }
 }
