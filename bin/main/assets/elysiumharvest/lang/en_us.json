@@ -16,6 +16,7 @@
   "item.elysiumharvest.florite_leggings": "Florite Leggings",
   "item.elysiumharvest.florite_boots": "Florite Boots",
   "tooltip.elysiumharvest.florite_armor_set": "Set Bonus: Accelerates crop growth nearby",
+  "effect.elysiumharvest.florite_set_bonus": "Florite Blessing",
   "elysiumharvest.configuration.title": "Elysium Harvest Configs",
   "elysiumharvest.configuration.section.elysiumharvest.common.toml": "Elysium Harvest Configs",
   "elysiumharvest.configuration.section.elysiumharvest.common.toml.title": "Elysium Harvest Configs",

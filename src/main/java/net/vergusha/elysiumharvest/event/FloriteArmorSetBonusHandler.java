@@ -3,6 +3,7 @@ package net.vergusha.elysiumharvest.event;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -35,15 +36,27 @@ public class FloriteArmorSetBonusHandler {
         }
 
         // Проверяем, носит ли игрок полный набор флоритовой брони
-        if (!isWearingFullFloriteArmor(player)) {
-            return;
+        boolean hasFullSet = isWearingFullFloriteArmor(player);
+
+        if (hasFullSet) {
+            // Применяем визуальный эффект в инвентаре (длительность 40 тиков = 2 секунды)
+            // Ambient = true означает менее яркие частицы
+            // ShowIcon = true показывает иконку в инвентаре
+            player.addEffect(new MobEffectInstance(
+                    ElysiumHarvest.FLORITE_SET_BONUS_EFFECT,
+                    40, // Длительность (2 секунды)
+                    0, // Уровень эффекта (0 = уровень 1)
+                    true, // Ambient
+                    true, // Visible particles
+                    true // Show icon
+            ));
+
+            // Добавляем визуальный эффект вокруг игрока
+            spawnSetBonusParticles(player);
+
+            // Ускоряем рост растений вокруг игрока
+            accelerateCropGrowth(player);
         }
-
-        // Добавляем визуальный эффект вокруг игрока
-        spawnSetBonusParticles(player);
-
-        // Ускоряем рост растений вокруг игрока
-        accelerateCropGrowth(player);
     }
 
     private static boolean isWearingFullFloriteArmor(Player player) {

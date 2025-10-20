@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.equipment.ArmorMaterial;
@@ -42,6 +43,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.vergusha.elysiumharvest.item.FloriteAxeItem;
 import net.vergusha.elysiumharvest.item.FloriteHoeItem;
 import net.vergusha.elysiumharvest.item.FloriteShovelItem;
+import net.vergusha.elysiumharvest.effect.FloriteSetBonusEffect;
 
 import java.util.EnumMap;
 
@@ -62,6 +64,11 @@ public class ElysiumHarvest {
         // registered under the "elysiumharvest" namespace
         public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister
                         .create(Registries.CREATIVE_MODE_TAB, MODID);
+        // Create a Deferred Register to hold MobEffects which will all be registered
+        // under
+        // the "elysiumharvest" namespace
+        public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister
+                        .create(Registries.MOB_EFFECT, MODID);
 
         // Florite Tool Material - based on documentation
         public static final ToolMaterial FLORITE_TOOL_MATERIAL = new ToolMaterial(
@@ -135,6 +142,10 @@ public class ElysiumHarvest {
         public static final DeferredItem<Item> FLORITE_BOOTS = ITEMS.registerItem("florite_boots",
                         props -> new Item(props.humanoidArmor(FLORITE_ARMOR_MATERIAL, ArmorType.BOOTS)));
 
+        // Florite Set Bonus Effect - визуальный эффект для полного сета брони
+        public static final DeferredHolder<MobEffect, MobEffect> FLORITE_SET_BONUS_EFFECT = MOB_EFFECTS.register(
+                        "florite_set_bonus", FloriteSetBonusEffect::new);
+
         // Florite Tools - using custom classes with ItemAbility support
         public static final DeferredItem<Item> FLORITE_SWORD = ITEMS.registerItem("florite_sword",
                         props -> new Item(props.sword(FLORITE_TOOL_MATERIAL, 3, -2.4f)));
@@ -196,6 +207,9 @@ public class ElysiumHarvest {
                 ITEMS.register(modEventBus);
                 // Register the Deferred Register to the mod event bus so tabs get registered
                 CREATIVE_MODE_TABS.register(modEventBus);
+                // Register the Deferred Register to the mod event bus so mob effects get
+                // registered
+                MOB_EFFECTS.register(modEventBus);
 
                 // Register ourselves for server and other game events we are interested in.
                 // Note that this is necessary if and only if we want *this* class
