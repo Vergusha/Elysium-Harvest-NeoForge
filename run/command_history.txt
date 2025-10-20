@@ -25,3 +25,5 @@
 /time set 0
 /gamemode survival
 /gamemode creative
+/gamemode spectator
+/gamemode creative
