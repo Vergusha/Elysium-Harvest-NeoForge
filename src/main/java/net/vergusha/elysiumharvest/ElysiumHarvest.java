@@ -42,7 +42,9 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.vergusha.elysiumharvest.item.FloriteAxeItem;
 import net.vergusha.elysiumharvest.item.FloriteHoeItem;
+import net.vergusha.elysiumharvest.item.FloritePickaxeItem;
 import net.vergusha.elysiumharvest.item.FloriteShovelItem;
+import net.vergusha.elysiumharvest.item.FloriteSwordItem;
 import net.vergusha.elysiumharvest.effect.FloriteSetBonusEffect;
 
 import java.util.EnumMap;
@@ -148,9 +150,9 @@ public class ElysiumHarvest {
 
         // Florite Tools - using custom classes with ItemAbility support
         public static final DeferredItem<Item> FLORITE_SWORD = ITEMS.registerItem("florite_sword",
-                        props -> new Item(props.sword(FLORITE_TOOL_MATERIAL, 3, -2.4f)));
+                        props -> new FloriteSwordItem(props.sword(FLORITE_TOOL_MATERIAL, 3, -2.4f)));
         public static final DeferredItem<Item> FLORITE_PICKAXE = ITEMS.registerItem("florite_pickaxe",
-                        props -> new Item(props.pickaxe(FLORITE_TOOL_MATERIAL, 1, -2.8f)));
+                        props -> new FloritePickaxeItem(props.pickaxe(FLORITE_TOOL_MATERIAL, 1, -2.8f)));
         public static final DeferredItem<Item> FLORITE_AXE = ITEMS.registerItem("florite_axe",
                         props -> new FloriteAxeItem(props.axe(FLORITE_TOOL_MATERIAL, 6.0f, -3.1f)));
         public static final DeferredItem<Item> FLORITE_SHOVEL = ITEMS.registerItem("florite_shovel",
