@@ -96,7 +96,7 @@ public class ElysiumHarvest {
                         ResourceKey.create(EquipmentAssets.ROOT_ID,
                                         ResourceLocation.fromNamespaceAndPath(MODID, "florite")));
 
-        // Deepslate Florite Ore Block - drops florite items when mined
+        // Deepslate Florite Ore Block - drops florite items and experience when mined
         public static final DeferredBlock<Block> DEEPSLATE_FLORITE_ORE = BLOCKS.registerSimpleBlock(
                         "deepslate_florite_ore",
                         BlockBehaviour.Properties.of()

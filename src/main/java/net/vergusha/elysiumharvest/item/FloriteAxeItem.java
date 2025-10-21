@@ -1,6 +1,8 @@
 package net.vergusha.elysiumharvest.item;
 
 import javax.annotation.Nonnull;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +28,19 @@ public class FloriteAxeItem extends Item {
             var result = currentState.getToolModifiedState(context, ability, false);
             if (result != null && !result.equals(currentState)) {
                 context.getLevel().setBlock(context.getClickedPos(), result, 11);
+
+                // Play appropriate sound effect based on action
+                if (ability == ItemAbilities.AXE_STRIP) {
+                    context.getLevel().playSound(context.getPlayer(), context.getClickedPos(),
+                            SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
+                } else if (ability == ItemAbilities.AXE_SCRAPE) {
+                    context.getLevel().playSound(context.getPlayer(), context.getClickedPos(),
+                            SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                } else if (ability == ItemAbilities.AXE_WAX_OFF) {
+                    context.getLevel().playSound(context.getPlayer(), context.getClickedPos(),
+                            SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+                }
+
                 var player = context.getPlayer();
                 if (player != null) {
                     context.getItemInHand().hurtAndBreak(1, player,

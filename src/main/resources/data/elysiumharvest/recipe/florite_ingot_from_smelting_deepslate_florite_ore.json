@@ -1,0 +1,10 @@
+{
+    "type": "minecraft:smelting",
+    "ingredient": "elysiumharvest:deepslate_florite_ore",
+    "result": {
+        "id": "elysiumharvest:florite_ingot"
+    },
+    "experience": 0.7,
+    "cookingtime": 200,
+    "group": "florite_ingot"
+}

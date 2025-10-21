@@ -1,6 +1,8 @@
 package net.vergusha.elysiumharvest.item;
 
 import javax.annotation.Nonnull;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +28,11 @@ public class FloriteShovelItem extends Item {
             var result = currentState.getToolModifiedState(context, ability, false);
             if (result != null && !result.equals(currentState)) {
                 context.getLevel().setBlock(context.getClickedPos(), result, 11);
+
+                // Play sound effect
+                context.getLevel().playSound(context.getPlayer(), context.getClickedPos(),
+                        SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
+
                 var player = context.getPlayer();
                 if (player != null) {
                     context.getItemInHand().hurtAndBreak(1, player,
