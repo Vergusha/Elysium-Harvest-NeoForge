@@ -100,20 +100,6 @@ public class ElysiumHarvest {
                         ResourceKey.create(EquipmentAssets.ROOT_ID,
                                         ResourceLocation.fromNamespaceAndPath(MODID, "florite")));
 
-        // Creates a new Block with the id "elysiumharvest:example_block", combining the
-        // namespace and path
-        public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block",
-                        BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
-        // Creates a new BlockItem with the id "elysiumharvest:example_block", combining
-        // the namespace and path
-        public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block",
-                        EXAMPLE_BLOCK);
-
-        // Creates a new food item with the id "elysiumharvest:example_id", nutrition 1
-        // and saturation 2
-        public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item",
-                        new Item.Properties().food(new FoodProperties.Builder()
-                                        .alwaysEdible().nutrition(1).saturationModifier(2f).build()));
         // Deepslate Florite Ore Block - drops florite items when mined
         public static final DeferredBlock<Block> DEEPSLATE_FLORITE_ORE = BLOCKS.registerSimpleBlock(
                         "deepslate_florite_ore",
@@ -167,10 +153,10 @@ public class ElysiumHarvest {
         public static final DeferredItem<BlockItem> FLORITE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("florite_block",
                         FLORITE_BLOCK);
 
-        // Creates a creative tab with the id "elysiumharvest:example_tab" for the
-        // example item, that is placed after the combat tab
-        public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS
-                        .register("example_tab", () -> CreativeModeTab.builder()
+        // Creates a creative tab with the id "elysiumharvest:florite_tab" for the
+        // florite items, that is placed after the combat tab
+        public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FLORITE_TAB = CREATIVE_MODE_TABS
+                        .register("florite_tab", () -> CreativeModeTab.builder()
                                         .title(Component.translatable("itemGroup.elysiumharvest")) // The language key
                                                                                                    // for the title of
                                                                                                    // your
@@ -178,9 +164,6 @@ public class ElysiumHarvest {
                                         .withTabsBefore(CreativeModeTabs.COMBAT)
                                         .icon(() -> FLORITE.get().getDefaultInstance())
                                         .displayItems((parameters, output) -> {
-                                                output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab.
-                                                                                   // For your own tabs, this
-                                                                                   // method is preferred over the event
                                                 output.accept(FLORITE.get());
                                                 output.accept(FLORITE_INGOT.get());
                                                 output.accept(FLORITE_SWORD.get());
@@ -241,10 +224,9 @@ public class ElysiumHarvest {
                 Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
         }
 
-        // Add the example block item to the building blocks tab
+        // Add the florite block item to the building blocks tab
         private void addCreative(BuildCreativeModeTabContentsEvent event) {
                 if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-                        event.accept(EXAMPLE_BLOCK_ITEM);
                         event.accept(FLORITE_BLOCK_ITEM);
                 }
 
