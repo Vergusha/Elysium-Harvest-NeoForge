@@ -1,0 +1,13 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+        {
+            "item": "elysiumharvest:raw_florite_block"
+        }
+    ],
+    "result": {
+        "item": "elysiumharvest:florite",
+        "count": 9
+    }
+}

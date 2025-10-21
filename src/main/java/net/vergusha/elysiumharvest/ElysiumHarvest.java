@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.Util;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -15,13 +14,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
-import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -107,12 +103,21 @@ public class ElysiumHarvest {
                                         .mapColor(MapColor.DEEPSLATE)
                                         .requiresCorrectToolForDrops()
                                         .strength(4.5f, 3.0f)
-                                        .sound(SoundType.DEEPSLATE)); // Florite Block - crafted from 9 florite items
+                                        .sound(SoundType.DEEPSLATE));
+        // Raw Florite Block - crafted from 9 raw florite items
+        public static final DeferredBlock<Block> RAW_FLORITE_BLOCK = BLOCKS.registerSimpleBlock("raw_florite_block",
+                        BlockBehaviour.Properties.of()
+                                        .mapColor(MapColor.RAW_IRON)
+                                        .requiresCorrectToolForDrops()
+                                        .strength(5.0f, 6.0f)
+                                        .sound(SoundType.STONE));
+        // Florite Block - crafted from 9 florite ingots
         public static final DeferredBlock<Block> FLORITE_BLOCK = BLOCKS.registerSimpleBlock("florite_block",
                         BlockBehaviour.Properties.of()
                                         .mapColor(MapColor.METAL)
                                         .requiresCorrectToolForDrops()
-                                        .strength(5.0f, 6.0f));
+                                        .strength(5.0f, 6.0f)
+                                        .sound(SoundType.METAL));
 
         // Florite Item - drops from deepslate florite ore
         public static final DeferredItem<Item> FLORITE = ITEMS.registerSimpleItem("florite");
@@ -150,6 +155,9 @@ public class ElysiumHarvest {
         public static final DeferredItem<BlockItem> DEEPSLATE_FLORITE_ORE_ITEM = ITEMS.registerSimpleBlockItem(
                         "deepslate_florite_ore",
                         DEEPSLATE_FLORITE_ORE);
+        public static final DeferredItem<BlockItem> RAW_FLORITE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(
+                        "raw_florite_block",
+                        RAW_FLORITE_BLOCK);
         public static final DeferredItem<BlockItem> FLORITE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("florite_block",
                         FLORITE_BLOCK);
 
@@ -176,6 +184,7 @@ public class ElysiumHarvest {
                                                 output.accept(FLORITE_LEGGINGS.get());
                                                 output.accept(FLORITE_BOOTS.get());
                                                 output.accept(DEEPSLATE_FLORITE_ORE_ITEM.get());
+                                                output.accept(RAW_FLORITE_BLOCK_ITEM.get());
                                                 output.accept(FLORITE_BLOCK_ITEM.get());
                                         }).build());
 
@@ -227,11 +236,13 @@ public class ElysiumHarvest {
         // Add the florite block item to the building blocks tab
         private void addCreative(BuildCreativeModeTabContentsEvent event) {
                 if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+                        event.accept(RAW_FLORITE_BLOCK_ITEM);
                         event.accept(FLORITE_BLOCK_ITEM);
                 }
 
                 if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
                         event.accept(DEEPSLATE_FLORITE_ORE_ITEM);
+                        event.accept(RAW_FLORITE_BLOCK_ITEM);
                 }
 
                 if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {

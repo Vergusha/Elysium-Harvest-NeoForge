@@ -1,0 +1,10 @@
+{
+    "type": "minecraft:blasting",
+    "ingredient": "elysiumharvest:raw_florite_block",
+    "result": {
+        "id": "elysiumharvest:florite_block"
+    },
+    "experience": 6.3,
+    "cookingtime": 900,
+    "group": "florite_block"
+}
