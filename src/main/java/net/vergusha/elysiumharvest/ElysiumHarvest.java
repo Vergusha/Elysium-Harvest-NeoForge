@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
@@ -125,6 +126,15 @@ public class ElysiumHarvest {
         // Florite Ingot - smelted from florite
         public static final DeferredItem<Item> FLORITE_INGOT = ITEMS.registerSimpleItem("florite_ingot");
 
+        // Cherry - edible food item (2-3x better than sweet berries)
+        // Sweet berries: 2 hunger, 0.4 saturation
+        // Cherry: 5 hunger, 1.0 saturation (2.5x better)
+        public static final DeferredItem<Item> CHERRY = ITEMS.registerItem("cherry",
+                        props -> new Item(props.food(new FoodProperties.Builder()
+                                        .nutrition(5)
+                                        .saturationModifier(1.0f)
+                                        .build())));
+
         // Florite Armor - humanoid armor based on documentation
         public static final DeferredItem<Item> FLORITE_HELMET = ITEMS.registerItem("florite_helmet",
                         props -> new Item(props.humanoidArmor(FLORITE_ARMOR_MATERIAL, ArmorType.HELMET)));
@@ -174,6 +184,7 @@ public class ElysiumHarvest {
                                         .displayItems((parameters, output) -> {
                                                 output.accept(FLORITE.get());
                                                 output.accept(FLORITE_INGOT.get());
+                                                output.accept(CHERRY.get());
                                                 output.accept(FLORITE_SWORD.get());
                                                 output.accept(FLORITE_PICKAXE.get());
                                                 output.accept(FLORITE_AXE.get());
@@ -243,6 +254,10 @@ public class ElysiumHarvest {
                 if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
                         event.accept(DEEPSLATE_FLORITE_ORE_ITEM);
                         event.accept(RAW_FLORITE_BLOCK_ITEM);
+                }
+
+                if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
+                        event.accept(CHERRY);
                 }
 
                 if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
