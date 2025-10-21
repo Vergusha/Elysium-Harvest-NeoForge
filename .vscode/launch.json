@@ -12,11 +12,11 @@
       "projectName": "Elysium-Harvest-NeoForge",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\clientRunProgramArgs.txt"
+        "@C:\\NeoForge\\Elysium-Harvest-NeoForge\\build\\moddev\\clientRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\clientRunVmArgs.txt",
-        "-Dfml.modFolders\u003delysiumharvest%%D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\bin\\main"
+        "@C:\\NeoForge\\Elysium-Harvest-NeoForge\\build\\moddev\\clientRunVmArgs.txt",
+        "-Dfml.modFolders\u003delysiumharvest%%C:\\NeoForge\\Elysium-Harvest-NeoForge\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},
@@ -34,11 +34,11 @@
       "projectName": "Elysium-Harvest-NeoForge",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\dataRunProgramArgs.txt"
+        "@C:\\NeoForge\\Elysium-Harvest-NeoForge\\build\\moddev\\dataRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\dataRunVmArgs.txt",
-        "-Dfml.modFolders\u003delysiumharvest%%D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\bin\\main"
+        "@C:\\NeoForge\\Elysium-Harvest-NeoForge\\build\\moddev\\dataRunVmArgs.txt",
+        "-Dfml.modFolders\u003delysiumharvest%%C:\\NeoForge\\Elysium-Harvest-NeoForge\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},
@@ -56,11 +56,11 @@
       "projectName": "Elysium-Harvest-NeoForge",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\gameTestServerRunProgramArgs.txt"
+        "@C:\\NeoForge\\Elysium-Harvest-NeoForge\\build\\moddev\\gameTestServerRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\gameTestServerRunVmArgs.txt",
-        "-Dfml.modFolders\u003delysiumharvest%%D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\bin\\main"
+        "@C:\\NeoForge\\Elysium-Harvest-NeoForge\\build\\moddev\\gameTestServerRunVmArgs.txt",
+        "-Dfml.modFolders\u003delysiumharvest%%C:\\NeoForge\\Elysium-Harvest-NeoForge\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},
@@ -78,11 +78,11 @@
       "projectName": "Elysium-Harvest-NeoForge",
       "mainClass": "net.neoforged.devlaunch.Main",
       "args": [
-        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\serverRunProgramArgs.txt"
+        "@C:\\NeoForge\\Elysium-Harvest-NeoForge\\build\\moddev\\serverRunProgramArgs.txt"
       ],
       "vmArgs": [
-        "@D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\build\\moddev\\serverRunVmArgs.txt",
-        "-Dfml.modFolders\u003delysiumharvest%%D:\\MinecraftModDevelop\\NeoForge\\1.21.10\\Elysium-Harvest-NeoForge\\bin\\main"
+        "@C:\\NeoForge\\Elysium-Harvest-NeoForge\\build\\moddev\\serverRunVmArgs.txt",
+        "-Dfml.modFolders\u003delysiumharvest%%C:\\NeoForge\\Elysium-Harvest-NeoForge\\bin\\main"
       ],
       "cwd": "${workspaceFolder}\\run",
       "env": {},
