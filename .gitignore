@@ -17,3 +17,24 @@
 # OS
 .DS_Store
 Thumbs.db
+ 
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+*.ipr
+*.iws
+
+# other
+eclipse
+run
+runs
+run-data
+
+repo
+/.old
