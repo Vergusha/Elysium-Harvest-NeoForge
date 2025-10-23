@@ -50,6 +50,12 @@ public class HoeHarvestHandler {
                 // Применяем износ инструмента
                 heldItem.hurtAndBreak(1, player,
                         player.getEquipmentSlotForItem(heldItem));
+
+                // Воспроизводим анимацию взмаха рукой
+                player.swing(event.getHand());
+
+                // Отменяем стандартное поведение мотыги (вспашку земли)
+                event.setCanceled(true);
             }
         }
     }
