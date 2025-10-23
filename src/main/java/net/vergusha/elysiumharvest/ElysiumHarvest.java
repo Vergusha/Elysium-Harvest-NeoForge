@@ -44,6 +44,7 @@ import net.vergusha.elysiumharvest.item.FloriteHoeItem;
 import net.vergusha.elysiumharvest.item.FloritePickaxeItem;
 import net.vergusha.elysiumharvest.item.FloriteShovelItem;
 import net.vergusha.elysiumharvest.item.FloriteSwordItem;
+import net.vergusha.elysiumharvest.item.HarvestStewItem;
 import net.vergusha.elysiumharvest.effect.FloriteSetBonusEffect;
 
 import java.util.EnumMap;
@@ -138,13 +139,14 @@ public class ElysiumHarvest {
                                         .build())));
 
         // Harvest Stew - food item made from wooden bowl, carrot, potato, and meat
-        public static final DeferredItem<Item> HARVEST_STEW = ITEMS.registerSimpleItem("harvest_stew",
-                        new Item.Properties()
+        public static final DeferredItem<Item> HARVEST_STEW = ITEMS.registerItem("harvest_stew",
+                        props -> new HarvestStewItem(props
                                         .stacksTo(32)
+                                        .craftRemainder(Items.BOWL)
                                         .food(new FoodProperties.Builder()
                                                         .nutrition(8)
                                                         .saturationModifier(1.2f)
-                                                        .build()));
+                                                        .build())));
 
         // Florite Armor - humanoid armor based on documentation
         public static final DeferredItem<Item> FLORITE_HELMET = ITEMS.registerItem("florite_helmet",
