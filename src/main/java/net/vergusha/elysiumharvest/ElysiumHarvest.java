@@ -135,6 +135,13 @@ public class ElysiumHarvest {
                                         .saturationModifier(1.0f)
                                         .build())));
 
+        // Harvest Stew - food item made from wooden bowl, carrot, potato, and meat
+        public static final DeferredItem<Item> HARVEST_STEW = ITEMS.registerSimpleItem("harvest_stew",
+                        new Item.Properties().food(new FoodProperties.Builder()
+                                        .nutrition(8)
+                                        .saturationModifier(1.2f)
+                                        .build()));
+
         // Florite Armor - humanoid armor based on documentation
         public static final DeferredItem<Item> FLORITE_HELMET = ITEMS.registerItem("florite_helmet",
                         props -> new Item(props.humanoidArmor(FLORITE_ARMOR_MATERIAL, ArmorType.HELMET)));
@@ -185,6 +192,7 @@ public class ElysiumHarvest {
                                                 output.accept(FLORITE.get());
                                                 output.accept(FLORITE_INGOT.get());
                                                 output.accept(CHERRY.get());
+                                                output.accept(HARVEST_STEW.get());
                                                 output.accept(FLORITE_SWORD.get());
                                                 output.accept(FLORITE_PICKAXE.get());
                                                 output.accept(FLORITE_AXE.get());

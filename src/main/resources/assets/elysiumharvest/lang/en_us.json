@@ -6,6 +6,7 @@
   "item.elysiumharvest.florite": "Florite",
   "item.elysiumharvest.florite_ingot": "Florite Ingot",
   "item.elysiumharvest.cherry": "Cherry",
+  "item.elysiumharvest.harvest_stew": "Harvest Stew",
   "item.elysiumharvest.florite_sword": "Florite Sword",
   "item.elysiumharvest.florite_pickaxe": "Florite Pickaxe",
   "item.elysiumharvest.florite_axe": "Florite Axe",
@@ -23,5 +24,6 @@
   "elysiumharvest.configuration.items": "Item List",
   "elysiumharvest.configuration.logDirtBlock": "Log Dirt Block",
   "elysiumharvest.configuration.magicNumberIntroduction": "Magic Number Text",
-  "elysiumharvest.configuration.magicNumber": "Magic Number"
+  "elysiumharvest.configuration.magicNumber": "Magic Number",
+  "recipe.elysiumharvest.harvest_stew": "Harvest Stew - Wooden Bowl + Carrot + Potato + Meat"
 }

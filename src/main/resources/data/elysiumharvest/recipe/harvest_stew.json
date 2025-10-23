@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "food",
+    "ingredients": [
+        "minecraft:carrot",
+        "minecraft:potato",
+        "minecraft:beef",
+        "minecraft:bowl"
+    ],
+    "result": {
+        "id": "elysiumharvest:harvest_stew",
+        "count": 1
+    }
+}
