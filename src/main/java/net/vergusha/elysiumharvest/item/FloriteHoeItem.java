@@ -36,6 +36,16 @@ public class FloriteHoeItem extends Item {
     }
 
     @Override
+    public float getDestroySpeed(@Nonnull ItemStack stack, @Nonnull BlockState state) {
+        return super.getDestroySpeed(stack, state);
+    }
+
+    @Override
+    public boolean isCorrectToolForDrops(@Nonnull ItemStack stack, @Nonnull BlockState state) {
+        return super.isCorrectToolForDrops(stack, state);
+    }
+
+    @Override
     public @Nonnull InteractionResult useOn(@Nonnull UseOnContext context) {
         Level level = context.getLevel();
         BlockPos clickedPos = context.getClickedPos();

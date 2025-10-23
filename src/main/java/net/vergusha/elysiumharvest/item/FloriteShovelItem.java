@@ -7,6 +7,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 
@@ -18,6 +19,16 @@ public class FloriteShovelItem extends Item {
     @Override
     public boolean canPerformAction(@Nonnull ItemStack stack, @Nonnull ItemAbility itemAbility) {
         return ItemAbilities.DEFAULT_SHOVEL_ACTIONS.contains(itemAbility);
+    }
+
+    @Override
+    public float getDestroySpeed(@Nonnull ItemStack stack, @Nonnull BlockState state) {
+        return super.getDestroySpeed(stack, state);
+    }
+
+    @Override
+    public boolean isCorrectToolForDrops(@Nonnull ItemStack stack, @Nonnull BlockState state) {
+        return super.isCorrectToolForDrops(stack, state);
     }
 
     @Override

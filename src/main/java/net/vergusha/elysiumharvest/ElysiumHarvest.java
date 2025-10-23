@@ -39,6 +39,8 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.vergusha.elysiumharvest.item.FloriteAxeItem;
 import net.vergusha.elysiumharvest.item.FloriteHoeItem;
+import net.vergusha.elysiumharvest.item.FloriteAxeItem;
+import net.vergusha.elysiumharvest.item.FloriteHoeItem;
 import net.vergusha.elysiumharvest.item.FloritePickaxeItem;
 import net.vergusha.elysiumharvest.item.FloriteShovelItem;
 import net.vergusha.elysiumharvest.item.FloriteSwordItem;
@@ -73,7 +75,7 @@ public class ElysiumHarvest {
         public static final ToolMaterial FLORITE_TOOL_MATERIAL = new ToolMaterial(
                         BlockTags.INCORRECT_FOR_IRON_TOOL, // Same mining level as iron
                         500, // Durability (iron is 250)
-                        6.5f, // Mining speed (iron is 6)
+                        13.0f, // Mining speed (faster than gold's 12.0f, iron is 6.0f)
                         2.5f, // Attack damage bonus (iron is 2)
                         14, // Enchantability
                         ItemTags.IRON_TOOL_MATERIALS // Repair ingredient tag
@@ -156,7 +158,7 @@ public class ElysiumHarvest {
         public static final DeferredHolder<MobEffect, MobEffect> FLORITE_SET_BONUS_EFFECT = MOB_EFFECTS.register(
                         "florite_set_bonus", FloriteSetBonusEffect::new);
 
-        // Florite Tools - using custom classes with ItemAbility support
+        // Florite Tools - using built-in tool setup via properties
         public static final DeferredItem<Item> FLORITE_SWORD = ITEMS.registerItem("florite_sword",
                         props -> new FloriteSwordItem(props.sword(FLORITE_TOOL_MATERIAL, 3, -2.4f)));
         public static final DeferredItem<Item> FLORITE_PICKAXE = ITEMS.registerItem("florite_pickaxe",
