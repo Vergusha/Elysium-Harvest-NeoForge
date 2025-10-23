@@ -139,10 +139,12 @@ public class ElysiumHarvest {
 
         // Harvest Stew - food item made from wooden bowl, carrot, potato, and meat
         public static final DeferredItem<Item> HARVEST_STEW = ITEMS.registerSimpleItem("harvest_stew",
-                        new Item.Properties().food(new FoodProperties.Builder()
-                                        .nutrition(8)
-                                        .saturationModifier(1.2f)
-                                        .build()));
+                        new Item.Properties()
+                                        .stacksTo(32)
+                                        .food(new FoodProperties.Builder()
+                                                        .nutrition(8)
+                                                        .saturationModifier(1.2f)
+                                                        .build()));
 
         // Florite Armor - humanoid armor based on documentation
         public static final DeferredItem<Item> FLORITE_HELMET = ITEMS.registerItem("florite_helmet",
