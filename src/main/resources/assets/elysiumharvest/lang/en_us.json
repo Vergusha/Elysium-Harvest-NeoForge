@@ -24,6 +24,5 @@
   "elysiumharvest.configuration.items": "Item List",
   "elysiumharvest.configuration.logDirtBlock": "Log Dirt Block",
   "elysiumharvest.configuration.magicNumberIntroduction": "Magic Number Text",
-  "elysiumharvest.configuration.magicNumber": "Magic Number",
-  "recipe.elysiumharvest.harvest_stew": "Harvest Stew - Wooden Bowl + Carrot + Potato + Meat"
+  "elysiumharvest.configuration.magicNumber": "Magic Number"
 }
