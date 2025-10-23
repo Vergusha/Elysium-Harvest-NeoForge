@@ -121,26 +121,18 @@ public class FloriteHoeItem extends Item {
 
                     boolean foundSeeds = false;
 
-                    // Выдаём дроп игроку
+                    // Дропаем предметы в мир
                     for (ItemStack drop : drops) {
                         if (!foundSeeds && areSeedsForCrop(drop.getItem(), block)) {
                             // Это семена - уменьшаем количество на 1 для пересадки
                             if (drop.getCount() > 1) {
                                 drop.shrink(1);
-                                if (player != null) {
-                                    player.addItem(drop);
-                                } else {
-                                    spawnItemInWorld(level, pos, drop);
-                                }
+                                spawnItemInWorld(level, pos, drop);
                             }
                             foundSeeds = true;
                         } else {
-                            // Выдаём остальной дроп
-                            if (player != null) {
-                                player.addItem(drop);
-                            } else {
-                                spawnItemInWorld(level, pos, drop);
-                            }
+                            // Дропаем остальные предметы
+                            spawnItemInWorld(level, pos, drop);
                         }
                     }
 
@@ -169,13 +161,9 @@ public class FloriteHoeItem extends Item {
 
                 List<ItemStack> drops = state.getDrops(lootBuilder);
 
-                // Выдаём дроп игроку
+                // Дропаем все предметы в мир
                 for (ItemStack drop : drops) {
-                    if (player != null) {
-                        player.addItem(drop);
-                    } else {
-                        spawnItemInWorld(level, pos, drop);
-                    }
+                    spawnItemInWorld(level, pos, drop);
                 }
 
                 // Воспроизводим звук
@@ -188,23 +176,6 @@ public class FloriteHoeItem extends Item {
         }
 
         return false;
-    }
-
-    /**
-     * Получает семена для данной культуры
-     */
-    private ItemStack getSeedsFromCrop(Block crop) {
-        if (crop == Blocks.WHEAT)
-            return new ItemStack(Items.WHEAT_SEEDS);
-        if (crop == Blocks.CARROTS)
-            return new ItemStack(Items.CARROT);
-        if (crop == Blocks.POTATOES)
-            return new ItemStack(Items.POTATO);
-        if (crop == Blocks.BEETROOTS)
-            return new ItemStack(Items.BEETROOT_SEEDS);
-        if (crop == Blocks.NETHER_WART)
-            return new ItemStack(Items.NETHER_WART);
-        return ItemStack.EMPTY;
     }
 
     /**
