@@ -93,9 +93,7 @@ public class FloriteHoeItem extends Item {
         return performedAction ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
-    /**
-     * Проверяет, можно ли вспахать данный блок
-     */
+
     private boolean canTillBlock(BlockState state) {
         return state.is(Blocks.DIRT) ||
                 state.is(Blocks.GRASS_BLOCK) ||
@@ -103,11 +101,6 @@ public class FloriteHoeItem extends Item {
                 state.is(Blocks.COARSE_DIRT);
     }
 
-    /**
-     * Пытается собрать урожай и автоматически пересадить его
-     * 
-     * @return true если урожай был собран
-     */
     private boolean tryHarvestCrop(Level level, BlockPos pos, BlockState state,
             net.minecraft.world.entity.player.Player player) {
         Block block = state.getBlock();
@@ -131,7 +124,6 @@ public class FloriteHoeItem extends Item {
 
                     boolean foundSeeds = false;
 
-                    // Дропаем предметы в мир
                     for (ItemStack drop : drops) {
                         if (!foundSeeds && areSeedsForCrop(drop.getItem(), block)) {
                             // Это семена - уменьшаем количество на 1 для пересадки
@@ -145,21 +137,15 @@ public class FloriteHoeItem extends Item {
                             spawnItemInWorld(level, pos, drop);
                         }
                     }
-
-                    // Воспроизводим звук сбора урожая
                     level.playSound(null, pos, SoundEvents.CROP_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
-
-                    // Пересаживаем культуру (возвращаем в начальное состояние)
                     level.setBlock(pos, cropBlock.getStateForAge(0), 11);
                 }
                 return true;
             }
         }
 
-        // Также обрабатываем другие типы культур
         if (isHarvestableCrop(state)) {
             if (level instanceof ServerLevel serverLevel) {
-                // Получаем дроп
                 LootParams.Builder lootBuilder = new LootParams.Builder(serverLevel)
                         .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
                         .withParameter(LootContextParams.BLOCK_STATE, state)
@@ -171,15 +157,10 @@ public class FloriteHoeItem extends Item {
 
                 List<ItemStack> drops = state.getDrops(lootBuilder);
 
-                // Дропаем все предметы в мир
                 for (ItemStack drop : drops) {
                     spawnItemInWorld(level, pos, drop);
                 }
-
-                // Воспроизводим звук
                 level.playSound(null, pos, SoundEvents.CROP_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
-
-                // Пересаживаем
                 level.setBlock(pos, getResetStateForCrop(state), 11);
             }
             return true;
@@ -187,10 +168,6 @@ public class FloriteHoeItem extends Item {
 
         return false;
     }
-
-    /**
-     * Проверяет, являются ли предметы семенами для данной культуры
-     */
     private boolean areSeedsForCrop(Item item, Block crop) {
         if (crop == Blocks.WHEAT && item == Items.WHEAT_SEEDS)
             return true;
@@ -205,13 +182,9 @@ public class FloriteHoeItem extends Item {
         return false;
     }
 
-    /**
-     * Проверяет, является ли культура готовой к сбору урожая
-     */
     private boolean isHarvestableCrop(BlockState state) {
         Block block = state.getBlock();
 
-        // Нижний адский нарост
         if (block == Blocks.NETHER_WART) {
             IntegerProperty ageProperty = (IntegerProperty) state.getBlock().getStateDefinition()
                     .getProperty("age");
@@ -220,7 +193,6 @@ public class FloriteHoeItem extends Item {
             }
         }
 
-        // Какао-бобы
         if (block == Blocks.COCOA) {
             IntegerProperty ageProperty = (IntegerProperty) state.getBlock().getStateDefinition()
                     .getProperty("age");
@@ -232,9 +204,6 @@ public class FloriteHoeItem extends Item {
         return false;
     }
 
-    /**
-     * Получает начальное состояние для пересадки культуры
-     */
     private BlockState getResetStateForCrop(BlockState state) {
         Block block = state.getBlock();
         IntegerProperty ageProperty = (IntegerProperty) block.getStateDefinition().getProperty("age");
@@ -246,9 +215,6 @@ public class FloriteHoeItem extends Item {
         return state;
     }
 
-    /**
-     * Создаёт предмет в мире
-     */
     private void spawnItemInWorld(Level level, BlockPos pos, ItemStack stack) {
         if (!stack.isEmpty()) {
             ItemEntity itemEntity = new ItemEntity(level,

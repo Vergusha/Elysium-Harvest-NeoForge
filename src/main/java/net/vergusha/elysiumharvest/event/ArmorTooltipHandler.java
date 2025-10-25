@@ -16,16 +16,10 @@ public class ArmorTooltipHandler {
     public static void onTooltip(ItemTooltipEvent event) {
         Item item = event.getItemStack().getItem();
 
-        // Проверяем, является ли предмет частью флоритовой брони
         if (item == ElysiumHarvest.FLORITE_HELMET.get() ||
                 item == ElysiumHarvest.FLORITE_CHESTPLATE.get() ||
                 item == ElysiumHarvest.FLORITE_LEGGINGS.get() ||
                 item == ElysiumHarvest.FLORITE_BOOTS.get()) {
-
-            // Добавляем пустую строку для отступа
-            event.getToolTip().add(Component.empty());
-
-            // Добавляем подсказку о бонусе набора
             event.getToolTip().add(Component.translatable("tooltip.elysiumharvest.florite_armor_set")
                     .withStyle(ChatFormatting.GREEN));
         }

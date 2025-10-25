@@ -23,38 +23,30 @@ import net.vergusha.elysiumharvest.ElysiumHarvest;
 @EventBusSubscriber(modid = ElysiumHarvest.MODID)
 public class FloriteArmorSetBonusHandler {
 
-    private static final int GROWTH_RADIUS = 3; // Радиус действия эффекта
-    private static final int TICK_INTERVAL = 20; // Проверка каждую секунду (20 тиков)
+    private static final int GROWTH_RADIUS = 3;
+    private static final int TICK_INTERVAL = 40;
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
-
-        // Проверяем только на сервере и каждые 20 тиков
         if (!(player.level() instanceof ServerLevel) || player.level().getGameTime() % TICK_INTERVAL != 0) {
             return;
         }
 
-        // Проверяем, носит ли игрок полный набор флоритовой брони
         boolean hasFullSet = isWearingFullFloriteArmor(player);
 
         if (hasFullSet) {
-            // Применяем визуальный эффект в инвентаре (длительность 40 тиков = 2 секунды)
-            // Ambient = true означает менее яркие частицы
-            // ShowIcon = true показывает иконку в инвентаре
+
             player.addEffect(new MobEffectInstance(
                     ElysiumHarvest.FLORITE_SET_BONUS_EFFECT,
-                    40, // Длительность (2 секунды)
-                    0, // Уровень эффекта (0 = уровень 1)
+                    40,
+                    0,
                     true, // Ambient
                     true, // Visible particles
                     true // Show icon
             ));
 
-            // Добавляем визуальный эффект вокруг игрока
             spawnSetBonusParticles(player);
-
-            // Ускоряем рост растений вокруг игрока
             accelerateCropGrowth(player);
         }
     }
@@ -75,23 +67,16 @@ public class FloriteArmorSetBonusHandler {
         ServerLevel level = (ServerLevel) player.level();
         BlockPos playerPos = player.blockPosition();
 
-        // Проходим по всем блокам вокруг игрока
         for (int x = -GROWTH_RADIUS; x <= GROWTH_RADIUS; x++) {
             for (int y = -1; y <= 1; y++) {
                 for (int z = -GROWTH_RADIUS; z <= GROWTH_RADIUS; z++) {
                     BlockPos pos = playerPos.offset(x, y, z);
                     BlockState state = level.getBlockState(pos);
                     Block block = state.getBlock();
-
-                    // Проверяем, является ли блок культурным растением (исключаем траву и цветы)
                     if (isCropBlock(block) && block instanceof BonemealableBlock bonemealable) {
-                        // Проверяем, может ли растение расти
                         if (bonemealable.isValidBonemealTarget(level, pos, state)) {
-                            // С шансом 30% ускоряем рост (как костная мука)
                             if (level.random.nextFloat() < 0.3f) {
                                 bonemealable.performBonemeal(level, level.random, pos, state);
-
-                                // Добавляем частицы роста
                                 level.levelEvent(2005, pos, 0);
                             }
                         }
@@ -101,10 +86,6 @@ public class FloriteArmorSetBonusHandler {
         }
     }
 
-    /**
-     * Проверяет, является ли блок культурным растением (crops)
-     * Исключает траву, цветы и другие декоративные растения
-     */
     private static boolean isCropBlock(Block block) {
         return block instanceof CropBlock || // Пшеница, морковь, картофель, свекла и т.д.
                 block instanceof StemBlock || // Тыквы и арбузы (стебли)

@@ -27,10 +27,6 @@ import net.vergusha.elysiumharvest.item.FloriteHoeItem;
 
 import java.util.List;
 
-/**
- * Обработчик сбора урожая для всех мотыг (кроме Флоритовой)
- * Флоритовая мотыга имеет свою реализацию в FloriteHoeItem
- */
 @EventBusSubscriber(modid = ElysiumHarvest.MODID)
 public class HoeHarvestHandler {
 

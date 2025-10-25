@@ -52,37 +52,27 @@ import java.util.EnumMap;
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(ElysiumHarvest.MODID)
 public class ElysiumHarvest {
-        // Define mod id in a common place for everything to reference
+
         public static final String MODID = "elysiumharvest";
-        // Directly reference a slf4j logger
         public static final Logger LOGGER = LogUtils.getLogger();
-        // Create a Deferred Register to hold Blocks which will all be registered under
-        // the "elysiumharvest" namespace
         public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
-        // Create a Deferred Register to hold Items which will all be registered under
-        // the "elysiumharvest" namespace
         public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
-        // Create a Deferred Register to hold CreativeModeTabs which will all be
-        // registered under the "elysiumharvest" namespace
         public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister
                         .create(Registries.CREATIVE_MODE_TAB, MODID);
-        // Create a Deferred Register to hold MobEffects which will all be registered
-        // under
-        // the "elysiumharvest" namespace
         public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister
                         .create(Registries.MOB_EFFECT, MODID);
 
-        // Florite Tool Material - based on documentation
+        // Флоритовый материал
         public static final ToolMaterial FLORITE_TOOL_MATERIAL = new ToolMaterial(
                         BlockTags.INCORRECT_FOR_IRON_TOOL, // Same mining level as iron
-                        500, // Durability (iron is 250)
-                        13.0f, // Mining speed (faster than gold's 12.0f, iron is 6.0f)
-                        2.5f, // Attack damage bonus (iron is 2)
+                        500, // Прочность
+                        13.0f, // Скорость добычи
+                        2.5f, // Урон от аттаки
                         14, // Enchantability
                         ItemTags.IRON_TOOL_MATERIALS // Repair ingredient tag
         );
 
-        // Florite Armor Material - based on documentation
+        // Флоритовый материал брони
         public static final ArmorMaterial FLORITE_ARMOR_MATERIAL = new ArmorMaterial(
                         15, // Durability multiplier (iron uses 15)
                         Util.make(new EnumMap<>(ArmorType.class), map -> {
@@ -100,7 +90,7 @@ public class ElysiumHarvest {
                         ResourceKey.create(EquipmentAssets.ROOT_ID,
                                         ResourceLocation.fromNamespaceAndPath(MODID, "florite")));
 
-        // Deepslate Florite Ore Block - drops florite items and experience when mined
+        // Блоки
         public static final DeferredBlock<Block> DEEPSLATE_FLORITE_ORE = BLOCKS.registerSimpleBlock(
                         "deepslate_florite_ore",
                         BlockBehaviour.Properties.of()
@@ -108,14 +98,12 @@ public class ElysiumHarvest {
                                         .requiresCorrectToolForDrops()
                                         .strength(4.5f, 3.0f)
                                         .sound(SoundType.DEEPSLATE));
-        // Raw Florite Block - crafted from 9 raw florite items
         public static final DeferredBlock<Block> RAW_FLORITE_BLOCK = BLOCKS.registerSimpleBlock("raw_florite_block",
                         BlockBehaviour.Properties.of()
                                         .mapColor(MapColor.RAW_IRON)
                                         .requiresCorrectToolForDrops()
                                         .strength(5.0f, 6.0f)
                                         .sound(SoundType.STONE));
-        // Florite Block - crafted from 9 florite ingots
         public static final DeferredBlock<Block> FLORITE_BLOCK = BLOCKS.registerSimpleBlock("florite_block",
                         BlockBehaviour.Properties.of()
                                         .mapColor(MapColor.METAL)
@@ -123,22 +111,17 @@ public class ElysiumHarvest {
                                         .strength(5.0f, 6.0f)
                                         .sound(SoundType.METAL));
 
-        // Florite Item - drops from deepslate florite ore
+        // Флорит (руда)
         public static final DeferredItem<Item> FLORITE = ITEMS.registerSimpleItem("florite");
-
-        // Florite Ingot - smelted from florite
+        // Флорит (слиток)
         public static final DeferredItem<Item> FLORITE_INGOT = ITEMS.registerSimpleItem("florite_ingot");
-
-        // Cherry - edible food item (2-3x better than sweet berries)
-        // Sweet berries: 2 hunger, 0.4 saturation
-        // Cherry: 5 hunger, 1.0 saturation (2.5x better)
+        // Вишня
         public static final DeferredItem<Item> CHERRY = ITEMS.registerItem("cherry",
                         props -> new Item(props.food(new FoodProperties.Builder()
                                         .nutrition(5)
                                         .saturationModifier(1.0f)
                                         .build())));
-
-        // Harvest Stew - food item made from wooden bowl, carrot, potato, and meat
+        // Урожайная похлебка
         public static final DeferredItem<Item> HARVEST_STEW = ITEMS.registerItem("harvest_stew",
                         props -> new HarvestStewItem(props
                                         .stacksTo(32)
@@ -148,7 +131,7 @@ public class ElysiumHarvest {
                                                         .saturationModifier(1.2f)
                                                         .build())));
 
-        // Florite Armor - humanoid armor based on documentation
+        // Флоритовая броня
         public static final DeferredItem<Item> FLORITE_HELMET = ITEMS.registerItem("florite_helmet",
                         props -> new Item(props.humanoidArmor(FLORITE_ARMOR_MATERIAL, ArmorType.HELMET)));
         public static final DeferredItem<Item> FLORITE_CHESTPLATE = ITEMS.registerItem("florite_chestplate",
@@ -158,11 +141,11 @@ public class ElysiumHarvest {
         public static final DeferredItem<Item> FLORITE_BOOTS = ITEMS.registerItem("florite_boots",
                         props -> new Item(props.humanoidArmor(FLORITE_ARMOR_MATERIAL, ArmorType.BOOTS)));
 
-        // Florite Set Bonus Effect - визуальный эффект для полного сета брони
+        // Эффект брони
         public static final DeferredHolder<MobEffect, MobEffect> FLORITE_SET_BONUS_EFFECT = MOB_EFFECTS.register(
                         "florite_set_bonus", FloriteSetBonusEffect::new);
 
-        // Florite Tools - using built-in tool setup via properties
+        // Флоритовые инструменты
         public static final DeferredItem<Item> FLORITE_SWORD = ITEMS.registerItem("florite_sword",
                         props -> new FloriteSwordItem(props.sword(FLORITE_TOOL_MATERIAL, 3, -2.4f)));
         public static final DeferredItem<Item> FLORITE_PICKAXE = ITEMS.registerItem("florite_pickaxe",
@@ -174,7 +157,7 @@ public class ElysiumHarvest {
         public static final DeferredItem<Item> FLORITE_HOE = ITEMS.registerItem("florite_hoe",
                         props -> new FloriteHoeItem(props.hoe(FLORITE_TOOL_MATERIAL, -1.0f, -3.0f)));
 
-        // Block Items
+        // Блоки (предметы)
         public static final DeferredItem<BlockItem> DEEPSLATE_FLORITE_ORE_ITEM = ITEMS.registerSimpleBlockItem(
                         "deepslate_florite_ore",
                         DEEPSLATE_FLORITE_ORE);
@@ -184,14 +167,10 @@ public class ElysiumHarvest {
         public static final DeferredItem<BlockItem> FLORITE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("florite_block",
                         FLORITE_BLOCK);
 
-        // Creates a creative tab with the id "elysiumharvest:florite_tab" for the
-        // florite items, that is placed after the combat tab
+        // Креатив меню
         public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FLORITE_TAB = CREATIVE_MODE_TABS
                         .register("florite_tab", () -> CreativeModeTab.builder()
-                                        .title(Component.translatable("itemGroup.elysiumharvest")) // The language key
-                                                                                                   // for the title of
-                                                                                                   // your
-                                                                                                   // CreativeModeTab
+                                        .title(Component.translatable("itemGroup.elysiumharvest"))
                                         .withTabsBefore(CreativeModeTabs.COMBAT)
                                         .icon(() -> FLORITE.get().getDefaultInstance())
                                         .displayItems((parameters, output) -> {
@@ -213,42 +192,19 @@ public class ElysiumHarvest {
                                                 output.accept(FLORITE_BLOCK_ITEM.get());
                                         }).build());
 
-        // The constructor for the mod class is the first code that is run when your mod
-        // is loaded.
-        // FML will recognize some parameter types like IEventBus or ModContainer and
-        // pass them in automatically.
+        //
         public ElysiumHarvest(IEventBus modEventBus, ModContainer modContainer) {
-                // Register the commonSetup method for modloading
                 modEventBus.addListener(this::commonSetup);
-                // Register the Deferred Register to the mod event bus so blocks get registered
                 BLOCKS.register(modEventBus);
-                // Register the Deferred Register to the mod event bus so items get registered
                 ITEMS.register(modEventBus);
-                // Register the Deferred Register to the mod event bus so tabs get registered
-                CREATIVE_MODE_TABS.register(modEventBus);
-                // Register the Deferred Register to the mod event bus so mob effects get
-                // registered
                 MOB_EFFECTS.register(modEventBus);
-
-                // Register ourselves for server and other game events we are interested in.
-                // Note that this is necessary if and only if we want *this* class
-                // (ElysiumHarvest) to respond directly to events.
-                // Do not add this line if there are no @SubscribeEvent-annotated functions in
-                // this class, like onServerStarting() below.
                 NeoForge.EVENT_BUS.register(this);
-
-                // Register the item to a creative tab
                 modEventBus.addListener(this::addCreative);
-
-                // Register our mod's ModConfigSpec so that FML can create and load the config
-                // file for us
                 modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         }
 
         private void commonSetup(FMLCommonSetupEvent event) {
-                // Some common setup code
                 LOGGER.info("HELLO FROM COMMON SETUP");
-
                 if (Config.LOG_DIRT_BLOCK.getAsBoolean()) {
                         LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
                 }
@@ -258,7 +214,6 @@ public class ElysiumHarvest {
                 Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
         }
 
-        // Add the florite block item to the building blocks tab
         private void addCreative(BuildCreativeModeTabContentsEvent event) {
                 if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
                         event.accept(RAW_FLORITE_BLOCK_ITEM);
@@ -280,7 +235,6 @@ public class ElysiumHarvest {
                 }
         }
 
-        // You can use SubscribeEvent and let the Event Bus discover methods to call
         @SubscribeEvent
         public void onServerStarting(ServerStartingEvent event) {
                 // Do something when the server starts

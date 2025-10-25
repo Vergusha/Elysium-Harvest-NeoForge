@@ -7,10 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
-/**
- * Harvest Stew - bowl-based food that stacks up to 32 and returns an empty bowl
- * when consumed.
- */
 public class HarvestStewItem extends Item {
     public HarvestStewItem(Properties properties) {
         super(properties);
