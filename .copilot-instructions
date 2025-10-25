@@ -1,0 +1,24 @@
+# .copilot-instructions
+# Настройки генерации кода для Minecraft NeoForge 1.21.10
+
+project: Minecraft Mod
+mod_loader: NeoForge
+minecraft_version: 1.21.10
+language: Java
+comments: Russian
+
+rules:
+  - Используй API NeoForge, не Fabric и не Forge старых версий.
+  - Не используй устаревшие методы Forge.
+  - Добавляй аннотации @Mod и @SubscribeEvent при необходимости.
+  - Всегда указывай package в начале файла.
+  - Не генерируй код client-only, если не указано явно.
+  - Комментарии пиши на русском, объясняй логику кода.
+  - Не придумывай классы, которых нет в NeoForge 1.21.10.
+  - Следуй структуре модов: main мод-класс, event-handler, registry-классы, resources.
+  - Если не уверен — предложи ссылку на NeoForge Docs (https://neoforged.net/).
+
+context:
+  - Используй официальное NeoForge API 1.21.10.
+  - Импорты должны начинаться с net.neoforged.*.
+  - Структура проекта как в примерах NeoForge.
