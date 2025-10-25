@@ -1,5 +1,7 @@
 package net.vergusha.elysiumharvest;
 
+import java.util.EnumMap;
+
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -15,7 +17,12 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.EquipmentAssets;
@@ -26,9 +33,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -37,17 +44,14 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.vergusha.elysiumharvest.item.FloriteAxeItem;
-import net.vergusha.elysiumharvest.item.FloriteHoeItem;
+import net.vergusha.elysiumharvest.block.KotelBlock;
+import net.vergusha.elysiumharvest.effect.FloriteSetBonusEffect;
 import net.vergusha.elysiumharvest.item.FloriteAxeItem;
 import net.vergusha.elysiumharvest.item.FloriteHoeItem;
 import net.vergusha.elysiumharvest.item.FloritePickaxeItem;
 import net.vergusha.elysiumharvest.item.FloriteShovelItem;
 import net.vergusha.elysiumharvest.item.FloriteSwordItem;
 import net.vergusha.elysiumharvest.item.HarvestStewItem;
-import net.vergusha.elysiumharvest.effect.FloriteSetBonusEffect;
-
-import java.util.EnumMap;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(ElysiumHarvest.MODID)
@@ -110,6 +114,17 @@ public class ElysiumHarvest {
                                         .requiresCorrectToolForDrops()
                                         .strength(5.0f, 6.0f)
                                         .sound(SoundType.METAL));
+        public static final DeferredBlock<KotelBlock> KOTEL = BLOCKS.registerBlock("kotel",
+                        KotelBlock::new,
+                        BlockBehaviour.Properties.of()
+                                        .mapColor(MapColor.METAL)
+                                        .strength(3.0f, 6.0f)
+                                        .sound(SoundType.METAL)
+                                        .requiresCorrectToolForDrops()
+                                        .noOcclusion()
+                                        .isViewBlocking((state, level, pos) -> false)
+                                        .isRedstoneConductor((state, level, pos) -> false)
+                                        .isSuffocating((state, level, pos) -> false));
 
         // Флорит (руда)
         public static final DeferredItem<Item> FLORITE = ITEMS.registerSimpleItem("florite");
@@ -166,6 +181,7 @@ public class ElysiumHarvest {
                         RAW_FLORITE_BLOCK);
         public static final DeferredItem<BlockItem> FLORITE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("florite_block",
                         FLORITE_BLOCK);
+        public static final DeferredItem<BlockItem> KOTEL_ITEM = ITEMS.registerSimpleBlockItem("kotel", KOTEL);
 
         // Креатив меню
         public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FLORITE_TAB = CREATIVE_MODE_TABS
@@ -190,6 +206,7 @@ public class ElysiumHarvest {
                                                 output.accept(DEEPSLATE_FLORITE_ORE_ITEM.get());
                                                 output.accept(RAW_FLORITE_BLOCK_ITEM.get());
                                                 output.accept(FLORITE_BLOCK_ITEM.get());
+                                                output.accept(KOTEL_ITEM.get());
                                         }).build());
 
         //
@@ -197,6 +214,7 @@ public class ElysiumHarvest {
                 modEventBus.addListener(this::commonSetup);
                 BLOCKS.register(modEventBus);
                 ITEMS.register(modEventBus);
+                CREATIVE_MODE_TABS.register(modEventBus);
                 MOB_EFFECTS.register(modEventBus);
                 NeoForge.EVENT_BUS.register(this);
                 modEventBus.addListener(this::addCreative);
@@ -218,11 +236,13 @@ public class ElysiumHarvest {
                 if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
                         event.accept(RAW_FLORITE_BLOCK_ITEM);
                         event.accept(FLORITE_BLOCK_ITEM);
+                        event.accept(KOTEL_ITEM);
                 }
 
                 if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
                         event.accept(DEEPSLATE_FLORITE_ORE_ITEM);
                         event.accept(RAW_FLORITE_BLOCK_ITEM);
+                        event.accept(KOTEL_ITEM);
                 }
 
                 if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
