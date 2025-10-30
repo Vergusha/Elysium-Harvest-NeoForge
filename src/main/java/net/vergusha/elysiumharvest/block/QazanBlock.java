@@ -10,7 +10,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class KotelBlock extends Block {
+public class QazanBlock extends Block {
     private static final VoxelShape SHAPE = Shapes.or(
             Block.box(2.0D, 1.0D, 2.0D, 14.0D, 3.0D, 14.0D),
             Block.box(3.0D, 0.0D, 3.0D, 13.0D, 1.0D, 13.0D),
@@ -20,7 +20,7 @@ public class KotelBlock extends Block {
             Block.box(14.0D, 3.0D, 1.0D, 15.0D, 5.0D, 15.0D)
     );
 
-    public KotelBlock(BlockBehaviour.Properties properties) {
+    public QazanBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
 

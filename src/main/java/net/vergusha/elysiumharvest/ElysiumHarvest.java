@@ -44,7 +44,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.vergusha.elysiumharvest.block.KotelBlock;
+import net.vergusha.elysiumharvest.block.QazanBlock;
 import net.vergusha.elysiumharvest.effect.FloriteSetBonusEffect;
 import net.vergusha.elysiumharvest.item.FloriteAxeItem;
 import net.vergusha.elysiumharvest.item.FloriteHoeItem;
@@ -114,8 +114,8 @@ public class ElysiumHarvest {
                                         .requiresCorrectToolForDrops()
                                         .strength(5.0f, 6.0f)
                                         .sound(SoundType.METAL));
-        public static final DeferredBlock<KotelBlock> KOTEL = BLOCKS.registerBlock("kotel",
-                        KotelBlock::new,
+        public static final DeferredBlock<QazanBlock> QAZAN = BLOCKS.registerBlock("qazan",
+                        QazanBlock::new,
                         BlockBehaviour.Properties.of()
                                         .mapColor(MapColor.METAL)
                                         .strength(3.0f, 6.0f)
@@ -181,7 +181,7 @@ public class ElysiumHarvest {
                         RAW_FLORITE_BLOCK);
         public static final DeferredItem<BlockItem> FLORITE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("florite_block",
                         FLORITE_BLOCK);
-        public static final DeferredItem<BlockItem> KOTEL_ITEM = ITEMS.registerSimpleBlockItem("kotel", KOTEL);
+        public static final DeferredItem<BlockItem> QAZAN_ITEM = ITEMS.registerSimpleBlockItem("qazan", QAZAN);
 
         // Креатив меню
         public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FLORITE_TAB = CREATIVE_MODE_TABS
@@ -206,7 +206,7 @@ public class ElysiumHarvest {
                                                 output.accept(DEEPSLATE_FLORITE_ORE_ITEM.get());
                                                 output.accept(RAW_FLORITE_BLOCK_ITEM.get());
                                                 output.accept(FLORITE_BLOCK_ITEM.get());
-                                                output.accept(KOTEL_ITEM.get());
+                                                output.accept(QAZAN_ITEM.get());
                                         }).build());
 
         //
@@ -236,13 +236,13 @@ public class ElysiumHarvest {
                 if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
                         event.accept(RAW_FLORITE_BLOCK_ITEM);
                         event.accept(FLORITE_BLOCK_ITEM);
-                        event.accept(KOTEL_ITEM);
+                        event.accept(QAZAN_ITEM);
                 }
 
                 if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
                         event.accept(DEEPSLATE_FLORITE_ORE_ITEM);
                         event.accept(RAW_FLORITE_BLOCK_ITEM);
-                        event.accept(KOTEL_ITEM);
+                        event.accept(QAZAN_ITEM);
                 }
 
                 if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {

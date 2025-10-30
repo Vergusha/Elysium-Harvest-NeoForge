@@ -6,8 +6,8 @@
 		64
 	],
 	"textures": {
-		"0": "elysiumharvest:block/kotel",
-		"particle": "elysiumharvest:block/kotel"
+		"0": "elysiumharvest:block/qazan",
+		"particle": "elysiumharvest:block/qazan"
 	},
 	"elements": [
 		{
