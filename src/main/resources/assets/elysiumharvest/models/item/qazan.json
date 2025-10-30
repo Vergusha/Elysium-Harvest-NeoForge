@@ -1,6 +1,3 @@
 {
-    "parent": "minecraft:item/generated",
-    "textures": {
-        "layer0": "elysiumharvest:item/qazan"
-    }
+    "parent": "elysiumharvest:block/qazan"
 }

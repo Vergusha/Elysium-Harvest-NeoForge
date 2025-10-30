@@ -17,18 +17,22 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
@@ -45,6 +49,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.vergusha.elysiumharvest.block.QazanBlock;
+import net.vergusha.elysiumharvest.blockentity.QazanBlockEntity;
 import net.vergusha.elysiumharvest.effect.FloriteSetBonusEffect;
 import net.vergusha.elysiumharvest.item.FloriteAxeItem;
 import net.vergusha.elysiumharvest.item.FloriteHoeItem;
@@ -52,6 +57,8 @@ import net.vergusha.elysiumharvest.item.FloritePickaxeItem;
 import net.vergusha.elysiumharvest.item.FloriteShovelItem;
 import net.vergusha.elysiumharvest.item.FloriteSwordItem;
 import net.vergusha.elysiumharvest.item.HarvestStewItem;
+import net.vergusha.elysiumharvest.menu.QazanMenu;
+import net.vergusha.elysiumharvest.recipe.QazanRecipe;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(ElysiumHarvest.MODID)
@@ -65,6 +72,14 @@ public class ElysiumHarvest {
                         .create(Registries.CREATIVE_MODE_TAB, MODID);
         public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister
                         .create(Registries.MOB_EFFECT, MODID);
+        public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister
+                        .create(Registries.BLOCK_ENTITY_TYPE, MODID);
+        public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister
+                        .create(Registries.MENU, MODID);
+        public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister
+                        .create(Registries.RECIPE_TYPE, MODID);
+        public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister
+                        .create(Registries.RECIPE_SERIALIZER, MODID);
 
         // Флоритовый материал
         public static final ToolMaterial FLORITE_TOOL_MATERIAL = new ToolMaterial(
@@ -183,6 +198,31 @@ public class ElysiumHarvest {
                         FLORITE_BLOCK);
         public static final DeferredItem<BlockItem> QAZAN_ITEM = ITEMS.registerSimpleBlockItem("qazan", QAZAN);
 
+        // BlockEntity
+        // TODO: Fix for 1.21.10 - BlockEntityType.Builder doesn't exist
+        // Using direct constructor with Set.of() for valid blocks
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<QazanBlockEntity>> QAZAN_BLOCK_ENTITY = BLOCK_ENTITIES
+                        .register("qazan", () -> new BlockEntityType<>(
+                                        QazanBlockEntity::new,
+                                        java.util.Set.of(QAZAN.get())));
+
+        // Menu
+        public static final DeferredHolder<MenuType<?>, MenuType<QazanMenu>> QAZAN_MENU = MENUS.register("qazan",
+                        () -> new MenuType<>(QazanMenu::new, net.minecraft.world.flag.FeatureFlags.DEFAULT_FLAGS));
+
+        // Recipe Type
+        public static final DeferredHolder<RecipeType<?>, RecipeType<QazanRecipe>> QAZAN_RECIPE_TYPE = RECIPE_TYPES
+                        .register("qazan_cooking", () -> new RecipeType<QazanRecipe>() {
+                                @Override
+                                public String toString() {
+                                        return "qazan_cooking";
+                                }
+                        });
+
+        // Recipe Serializer
+        public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<QazanRecipe>> QAZAN_RECIPE_SERIALIZER = RECIPE_SERIALIZERS
+                        .register("qazan_cooking", QazanRecipe.Serializer::new);
+
         // Креатив меню
         public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FLORITE_TAB = CREATIVE_MODE_TABS
                         .register("florite_tab", () -> CreativeModeTab.builder()
@@ -216,6 +256,10 @@ public class ElysiumHarvest {
                 ITEMS.register(modEventBus);
                 CREATIVE_MODE_TABS.register(modEventBus);
                 MOB_EFFECTS.register(modEventBus);
+                BLOCK_ENTITIES.register(modEventBus);
+                MENUS.register(modEventBus);
+                RECIPE_TYPES.register(modEventBus);
+                RECIPE_SERIALIZERS.register(modEventBus);
                 NeoForge.EVENT_BUS.register(this);
                 modEventBus.addListener(this::addCreative);
                 modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
