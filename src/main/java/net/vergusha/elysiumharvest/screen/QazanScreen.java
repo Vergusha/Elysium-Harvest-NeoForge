@@ -2,7 +2,6 @@ package net.vergusha.elysiumharvest.screen;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -24,16 +23,28 @@ public class QazanScreen extends AbstractContainerScreen<QazanMenu> {
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
         
-        // TODO: Fix for 1.21.10 - GuiGraphics.blit() API significantly changed
-        // Rendering simple background for now
-        // Removed renderBackground() call that caused infinite recursion
+        // Render the background texture
+        // Using the older blit method signature that should work in 1.21.10
+        guiGraphics.blit(
+                TEXTURE,
+                x, y,
+                0, 0,
+                this.imageWidth, this.imageHeight,
+                256, 256
+        );
         
-        // Отрисовка прогресс-бара
-        // TODO: Re-implement when correct GUI rendering API is found
+        // Render progress bar if cooking
         int progress = this.menu.getScaledProgress();
-        // if (progress > 0) {
-        //     // Progress bar rendering disabled until API is fixed
-        // }
+        if (progress > 0) {
+            // Draw progress arrow (assuming texture coordinates)
+            guiGraphics.blit(
+                    TEXTURE,
+                    x + 89, y + 34,
+                    176, 0,
+                    progress, 16,
+                    256, 256
+            );
+        }
     }
 
     @Override
