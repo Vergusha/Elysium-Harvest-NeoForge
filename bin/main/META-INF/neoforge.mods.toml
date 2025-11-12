@@ -18,7 +18,7 @@ license="All Rights Reserved"
 modId="elysiumharvest" #mandatory
 
 # The version number of the mod
-version="1.0.0" #mandatory
+version="1.0.2" #mandatory
 
 # A display name for the mod
 displayName="Elysium Harvest" #mandatory
@@ -30,17 +30,16 @@ displayName="Elysium Harvest" #mandatory
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 
 # A file name (in the root of the mod JAR) containing a logo for display
-#logoFile="examplemod.png" #optional
+logoFile="logo.png" #optional
 
 # A text field displayed in the mod UI
-#credits="" #optional
+credits="Created with passion for Minecraft modding" #optional
 
 # A text field displayed in the mod UI
-authors="YourNameHere, OtherNameHere" #optional
+authors="Vergusha" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
-description='''Example mod description.
-Newline characters can be used and will be replaced properly.'''
+description='''Elysium Harvest adds the mystical Florite material to Minecraft. Mine Deepslate Florite Ore, craft powerful tools and armor, and experience unique set bonuses that accelerate crop growth!'''
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
 [[mixins]]

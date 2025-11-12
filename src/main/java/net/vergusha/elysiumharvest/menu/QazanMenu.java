@@ -18,7 +18,8 @@ public class QazanMenu extends AbstractContainerMenu {
 
     // Для клиента
     public QazanMenu(int containerId, Inventory playerInventory) {
-        this(containerId, playerInventory, new SimpleContainer(QazanBlockEntity.CONTAINER_SIZE), new SimpleContainerData(2));
+        this(containerId, playerInventory, new SimpleContainer(QazanBlockEntity.CONTAINER_SIZE),
+                new SimpleContainerData(2));
     }
 
     // Для сервера
@@ -58,11 +59,11 @@ public class QazanMenu extends AbstractContainerMenu {
     public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
-        
+
         if (slot != null && slot.hasItem()) {
             ItemStack slotItem = slot.getItem();
             itemstack = slotItem.copy();
-            
+
             if (index == QazanBlockEntity.RESULT_SLOT) {
                 // Результат -> инвентарь игрока
                 if (!this.moveItemStackTo(slotItem, 7, 43, true)) {
