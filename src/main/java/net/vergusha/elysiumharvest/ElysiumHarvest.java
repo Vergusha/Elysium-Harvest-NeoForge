@@ -144,7 +144,6 @@ public class ElysiumHarvest {
                                         .isRedstoneConductor((state, level, pos) -> false)
                                         .isSuffocating((state, level, pos) -> false));
 
-        // ===== КУЛЬТУРЫ (CROP BLOCKS) =====
         // ===== КУЛЬТУРЫ (ОВОЩИ/ФРУКТЫ) - ПРЕДМЕТЫ =====
         // Томаты
         public static final DeferredItem<Item> TOMATO = ITEMS.registerItem("tomato",

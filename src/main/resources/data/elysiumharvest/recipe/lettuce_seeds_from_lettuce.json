@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+        "elysiumharvest:lettuce"
+    ],
+    "result": {
+        "id": "elysiumharvest:lettuce_seeds",
+        "count": 2
+    }
+}

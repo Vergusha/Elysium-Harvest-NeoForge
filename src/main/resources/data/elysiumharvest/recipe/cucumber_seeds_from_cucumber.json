@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+        "elysiumharvest:cucumber"
+    ],
+    "result": {
+        "id": "elysiumharvest:cucumber_seeds",
+        "count": 2
+    }
+}

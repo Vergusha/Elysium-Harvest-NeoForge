@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+        "elysiumharvest:bell_pepper"
+    ],
+    "result": {
+        "id": "elysiumharvest:bell_pepper_seeds",
+        "count": 2
+    }
+}

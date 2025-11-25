@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+        "elysiumharvest:broccoli"
+    ],
+    "result": {
+        "id": "elysiumharvest:broccoli_seeds",
+        "count": 2
+    }
+}

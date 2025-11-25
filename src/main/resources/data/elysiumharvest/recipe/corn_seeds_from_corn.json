@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+        "elysiumharvest:corn"
+    ],
+    "result": {
+        "id": "elysiumharvest:corn_seeds",
+        "count": 2
+    }
+}

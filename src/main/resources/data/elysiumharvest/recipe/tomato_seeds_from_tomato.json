@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+        "elysiumharvest:tomato"
+    ],
+    "result": {
+        "id": "elysiumharvest:tomato_seeds",
+        "count": 2
+    }
+}
