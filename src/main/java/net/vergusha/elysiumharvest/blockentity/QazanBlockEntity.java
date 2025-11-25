@@ -1,9 +1,7 @@
 package net.vergusha.elysiumharvest.blockentity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
@@ -127,9 +125,6 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
     public void clearContent() {
         this.items.clear();
     }
-
-    // TODO: Implement proper NBT persistence for Minecraft 1.21.10
-    // Currently disabled due to API changes - items will not persist on world reload
     
     public static void serverTick(Level level, BlockPos pos, BlockState state, QazanBlockEntity blockEntity) {
         if (level == null || level.isClientSide()) return;
@@ -155,18 +150,12 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
         BlockPos below = pos.below();
         BlockState belowState = level.getBlockState(below);
         
-        // Проверяем активный костёр
-        if (belowState.is(Blocks.CAMPFIRE)) {
+        // Казан готовит ТОЛЬКО над активным костром (обычным или душевным)
+        if (belowState.is(Blocks.CAMPFIRE) || belowState.is(Blocks.SOUL_CAMPFIRE)) {
             return belowState.getValue(BlockStateProperties.LIT);
         }
         
-        // Проверяем активную печь
-        if (belowState.is(Blocks.FURNACE) || belowState.is(Blocks.BLAST_FURNACE) || belowState.is(Blocks.SMOKER)) {
-            return belowState.getValue(BlockStateProperties.LIT);
-        }
-        
-        // Можно добавить другие источники тепла
-        return belowState.is(Blocks.MAGMA_BLOCK) || belowState.is(Blocks.LAVA);
+        return false;
     }
 
     private boolean canCook() {

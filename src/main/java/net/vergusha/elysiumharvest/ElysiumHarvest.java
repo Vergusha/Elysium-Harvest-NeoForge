@@ -35,6 +35,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -48,7 +49,9 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.vergusha.elysiumharvest.block.ModCropBlock;
 import net.vergusha.elysiumharvest.block.QazanBlock;
+import net.vergusha.elysiumharvest.block.TallCropBlock;
 import net.vergusha.elysiumharvest.blockentity.QazanBlockEntity;
 import net.vergusha.elysiumharvest.effect.FloriteSetBonusEffect;
 import net.vergusha.elysiumharvest.item.FloriteAxeItem;
@@ -141,6 +144,126 @@ public class ElysiumHarvest {
                                         .isRedstoneConductor((state, level, pos) -> false)
                                         .isSuffocating((state, level, pos) -> false));
 
+        // ===== КУЛЬТУРЫ (CROP BLOCKS) =====
+        // ===== КУЛЬТУРЫ (ОВОЩИ/ФРУКТЫ) - ПРЕДМЕТЫ =====
+        // Томаты
+        public static final DeferredItem<Item> TOMATO = ITEMS.registerItem("tomato",
+                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build())));
+        public static final DeferredItem<Item> TOMATO_SEEDS = ITEMS.registerItem("tomato_seeds", Item::new);
+        // Лук (семена и урожай - один предмет)
+        public static final DeferredItem<Item> ONION = ITEMS.registerItem("onion",
+                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3f).build())));
+        // Огурец
+        public static final DeferredItem<Item> CUCUMBER = ITEMS.registerItem("cucumber",
+                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3f).build())));
+        public static final DeferredItem<Item> CUCUMBER_SEEDS = ITEMS.registerItem("cucumber_seeds", Item::new);
+        // Капуста
+        public static final DeferredItem<Item> CABBAGE = ITEMS.registerItem("cabbage",
+                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.5f).build())));
+        public static final DeferredItem<Item> CABBAGE_SEEDS = ITEMS.registerItem("cabbage_seeds", Item::new);
+        // Чеснок (семена и урожай - один предмет)
+        public static final DeferredItem<Item> GARLIC = ITEMS.registerItem("garlic",
+                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2f).build())));
+        // Болгарский перец
+        public static final DeferredItem<Item> BELL_PEPPER = ITEMS.registerItem("bell_pepper",
+                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build())));
+        public static final DeferredItem<Item> BELL_PEPPER_SEEDS = ITEMS.registerItem("bell_pepper_seeds", Item::new);
+        // Баклажан
+        public static final DeferredItem<Item> EGGPLANT = ITEMS.registerItem("eggplant",
+                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build())));
+        public static final DeferredItem<Item> EGGPLANT_SEEDS = ITEMS.registerItem("eggplant_seeds", Item::new);
+        // Кукуруза
+        public static final DeferredItem<Item> CORN = ITEMS.registerItem("corn",
+                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.5f).build())));
+        public static final DeferredItem<Item> CORN_SEEDS = ITEMS.registerItem("corn_seeds", Item::new);
+        // Брокколи
+        public static final DeferredItem<Item> BROCCOLI = ITEMS.registerItem("broccoli",
+                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.5f).build())));
+        public static final DeferredItem<Item> BROCCOLI_SEEDS = ITEMS.registerItem("broccoli_seeds", Item::new);
+        // Салат
+        public static final DeferredItem<Item> LETTUCE = ITEMS.registerItem("lettuce",
+                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3f).build())));
+        public static final DeferredItem<Item> LETTUCE_SEEDS = ITEMS.registerItem("lettuce_seeds", Item::new);
+        // Имбирь (семена и урожай - один предмет)
+        public static final DeferredItem<Item> GINGER = ITEMS.registerItem("ginger",
+                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2f).build())));
+
+        // ===== ГОТОВЫЕ БЛЮДА ДЛЯ КАЗАНА =====
+        // Овощной суп
+        public static final DeferredItem<Item> VEGETABLE_SOUP = ITEMS.registerItem("vegetable_soup",
+                        props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.BOWL)
+                                        .food(new FoodProperties.Builder().nutrition(7).saturationModifier(0.9f).build())));
+        // Борщ
+        public static final DeferredItem<Item> BORSCHT = ITEMS.registerItem("borscht",
+                        props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.BOWL)
+                                        .food(new FoodProperties.Builder().nutrition(10).saturationModifier(1.2f).build())));
+        // Рагу
+        public static final DeferredItem<Item> STEW = ITEMS.registerItem("stew",
+                        props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.BOWL)
+                                        .food(new FoodProperties.Builder().nutrition(9).saturationModifier(1.1f).build())));
+        // Грибной суп
+        public static final DeferredItem<Item> MUSHROOM_STEW_UPGRADED = ITEMS.registerItem("mushroom_stew_upgraded",
+                        props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.BOWL)
+                                        .food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0f).build())));
+        // Кукурузная похлёбка
+        public static final DeferredItem<Item> CORN_SOUP = ITEMS.registerItem("corn_soup",
+                        props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.BOWL)
+                                        .food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.8f).build())));
+        // Салат
+        public static final DeferredItem<Item> SALAD = ITEMS.registerItem("salad",
+                        props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.BOWL)
+                                        .food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.7f).build())));
+        // Имбирный чай
+        public static final DeferredItem<Item> GINGER_TEA = ITEMS.registerItem("ginger_tea",
+                        props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.GLASS_BOTTLE)
+                                        .food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.6f).build())));
+
+        // Свойства для культур
+        private static BlockBehaviour.Properties cropProperties() {
+                return BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.PLANT)
+                        .noCollision()
+                        .randomTicks()
+                        .instabreak()
+                        .sound(SoundType.CROP)
+                        .pushReaction(PushReaction.DESTROY);
+        }
+
+        // ===== КУЛЬТУРЫ (CROP BLOCKS) =====
+        // Томаты
+        public static final DeferredBlock<ModCropBlock> TOMATO_CROP = BLOCKS.register("tomato_crop",
+                        () -> new ModCropBlock(cropProperties(), () -> TOMATO_SEEDS.get()));
+        // Лук
+        public static final DeferredBlock<ModCropBlock> ONION_CROP = BLOCKS.register("onion_crop",
+                        () -> new ModCropBlock(cropProperties(), () -> ONION.get()));
+        // Огурец
+        public static final DeferredBlock<ModCropBlock> CUCUMBER_CROP = BLOCKS.register("cucumber_crop",
+                        () -> new ModCropBlock(cropProperties(), () -> CUCUMBER_SEEDS.get()));
+        // Капуста
+        public static final DeferredBlock<ModCropBlock> CABBAGE_CROP = BLOCKS.register("cabbage_crop",
+                        () -> new ModCropBlock(cropProperties(), () -> CABBAGE_SEEDS.get()));
+        // Чеснок
+        public static final DeferredBlock<ModCropBlock> GARLIC_CROP = BLOCKS.register("garlic_crop",
+                        () -> new ModCropBlock(cropProperties(), () -> GARLIC.get()));
+        // Болгарский перец
+        public static final DeferredBlock<ModCropBlock> BELL_PEPPER_CROP = BLOCKS.register("bell_pepper_crop",
+                        () -> new ModCropBlock(cropProperties(), () -> BELL_PEPPER_SEEDS.get()));
+        // Баклажан
+        public static final DeferredBlock<ModCropBlock> EGGPLANT_CROP = BLOCKS.register("eggplant_crop",
+                        () -> new ModCropBlock(cropProperties(), () -> EGGPLANT_SEEDS.get()));
+        // Кукуруза (высокий блок)
+        public static final DeferredBlock<TallCropBlock> CORN_CROP = BLOCKS.register("corn_crop",
+                        () -> new TallCropBlock(cropProperties(), () -> CORN_SEEDS.get()));
+        // Брокколи
+        public static final DeferredBlock<ModCropBlock> BROCCOLI_CROP = BLOCKS.register("broccoli_crop",
+                        () -> new ModCropBlock(cropProperties(), () -> BROCCOLI_SEEDS.get()));
+        // Салат
+        public static final DeferredBlock<ModCropBlock> LETTUCE_CROP = BLOCKS.register("lettuce_crop",
+                        () -> new ModCropBlock(cropProperties(), () -> LETTUCE_SEEDS.get()));
+        // Имбирь
+        public static final DeferredBlock<ModCropBlock> GINGER_CROP = BLOCKS.register("ginger_crop",
+                        () -> new ModCropBlock(cropProperties(), () -> GINGER.get()));
+
         // Флорит (руда)
         public static final DeferredItem<Item> FLORITE = ITEMS.registerSimpleItem("florite");
         // Флорит (слиток)
@@ -230,10 +353,14 @@ public class ElysiumHarvest {
                                         .withTabsBefore(CreativeModeTabs.COMBAT)
                                         .icon(() -> FLORITE.get().getDefaultInstance())
                                         .displayItems((parameters, output) -> {
+                                                // Флорит и руда
                                                 output.accept(FLORITE.get());
                                                 output.accept(FLORITE_INGOT.get());
-                                                output.accept(CHERRY.get());
-                                                output.accept(HARVEST_STEW.get());
+                                                output.accept(DEEPSLATE_FLORITE_ORE_ITEM.get());
+                                                output.accept(RAW_FLORITE_BLOCK_ITEM.get());
+                                                output.accept(FLORITE_BLOCK_ITEM.get());
+                                                
+                                                // Инструменты и броня
                                                 output.accept(FLORITE_SWORD.get());
                                                 output.accept(FLORITE_PICKAXE.get());
                                                 output.accept(FLORITE_AXE.get());
@@ -243,10 +370,45 @@ public class ElysiumHarvest {
                                                 output.accept(FLORITE_CHESTPLATE.get());
                                                 output.accept(FLORITE_LEGGINGS.get());
                                                 output.accept(FLORITE_BOOTS.get());
-                                                output.accept(DEEPSLATE_FLORITE_ORE_ITEM.get());
-                                                output.accept(RAW_FLORITE_BLOCK_ITEM.get());
-                                                output.accept(FLORITE_BLOCK_ITEM.get());
+                                                
+                                                // Казан
                                                 output.accept(QAZAN_ITEM.get());
+                                                
+                                                // Культуры - семена
+                                                output.accept(TOMATO_SEEDS.get());
+                                                output.accept(CUCUMBER_SEEDS.get());
+                                                output.accept(CABBAGE_SEEDS.get());
+                                                output.accept(BELL_PEPPER_SEEDS.get());
+                                                output.accept(EGGPLANT_SEEDS.get());
+                                                output.accept(CORN_SEEDS.get());
+                                                output.accept(BROCCOLI_SEEDS.get());
+                                                output.accept(LETTUCE_SEEDS.get());
+                                                
+                                                // Культуры - овощи (семена и урожай - одно)
+                                                output.accept(ONION.get());
+                                                output.accept(GARLIC.get());
+                                                output.accept(GINGER.get());
+                                                
+                                                // Культуры - урожай
+                                                output.accept(TOMATO.get());
+                                                output.accept(CUCUMBER.get());
+                                                output.accept(CABBAGE.get());
+                                                output.accept(BELL_PEPPER.get());
+                                                output.accept(EGGPLANT.get());
+                                                output.accept(CORN.get());
+                                                output.accept(BROCCOLI.get());
+                                                output.accept(LETTUCE.get());
+                                                
+                                                // Еда
+                                                output.accept(CHERRY.get());
+                                                output.accept(HARVEST_STEW.get());
+                                                output.accept(VEGETABLE_SOUP.get());
+                                                output.accept(BORSCHT.get());
+                                                output.accept(STEW.get());
+                                                output.accept(MUSHROOM_STEW_UPGRADED.get());
+                                                output.accept(CORN_SOUP.get());
+                                                output.accept(SALAD.get());
+                                                output.accept(GINGER_TEA.get());
                                         }).build());
 
         //
@@ -291,11 +453,41 @@ public class ElysiumHarvest {
 
                 if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
                         event.accept(CHERRY);
+                        // Новые овощи
+                        event.accept(TOMATO);
+                        event.accept(ONION);
+                        event.accept(CUCUMBER);
+                        event.accept(CABBAGE);
+                        event.accept(GARLIC);
+                        event.accept(BELL_PEPPER);
+                        event.accept(EGGPLANT);
+                        event.accept(CORN);
+                        event.accept(BROCCOLI);
+                        event.accept(LETTUCE);
+                        event.accept(GINGER);
+                        // Готовые блюда
+                        event.accept(HARVEST_STEW);
+                        event.accept(VEGETABLE_SOUP);
+                        event.accept(BORSCHT);
+                        event.accept(STEW);
+                        event.accept(MUSHROOM_STEW_UPGRADED);
+                        event.accept(CORN_SOUP);
+                        event.accept(SALAD);
+                        event.accept(GINGER_TEA);
                 }
 
                 if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
                         event.accept(FLORITE);
                         event.accept(FLORITE_INGOT);
+                        // Семена
+                        event.accept(TOMATO_SEEDS);
+                        event.accept(CUCUMBER_SEEDS);
+                        event.accept(CABBAGE_SEEDS);
+                        event.accept(BELL_PEPPER_SEEDS);
+                        event.accept(EGGPLANT_SEEDS);
+                        event.accept(CORN_SEEDS);
+                        event.accept(BROCCOLI_SEEDS);
+                        event.accept(LETTUCE_SEEDS);
                 }
         }
 

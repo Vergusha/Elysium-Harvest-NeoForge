@@ -1,0 +1,13 @@
+{
+    "type": "elysiumharvest:qazan_cooking",
+    "ingredients": [
+        {"item": "elysiumharvest:broccoli"},
+        {"item": "elysiumharvest:broccoli"},
+        {"item": "minecraft:potato"},
+        {"item": "elysiumharvest:garlic"}
+    ],
+    "result": {
+        "id": "elysiumharvest:vegetable_soup",
+        "count": 2
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:block/crop",
+    "textures": {
+        "crop": "elysiumharvest:block/eggplant_stage6"
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "type": "neoforge:add_features",
+    "biomes": "#minecraft:is_overworld",
+    "features": [
+        "elysiumharvest:wild_tomatoes",
+        "elysiumharvest:wild_onions",
+        "elysiumharvest:wild_cucumbers",
+        "elysiumharvest:wild_cabbages",
+        "elysiumharvest:wild_garlic",
+        "elysiumharvest:wild_bell_peppers",
+        "elysiumharvest:wild_eggplants",
+        "elysiumharvest:wild_corn",
+        "elysiumharvest:wild_broccoli",
+        "elysiumharvest:wild_lettuce",
+        "elysiumharvest:wild_ginger"
+    ],
+    "step": "vegetal_decoration"
+}

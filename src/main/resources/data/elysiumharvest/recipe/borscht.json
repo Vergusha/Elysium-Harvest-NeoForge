@@ -1,0 +1,15 @@
+{
+    "type": "elysiumharvest:qazan_cooking",
+    "ingredients": [
+        {"item": "minecraft:beetroot"},
+        {"item": "elysiumharvest:cabbage"},
+        {"item": "minecraft:potato"},
+        {"item": "minecraft:carrot"},
+        {"item": "elysiumharvest:onion"},
+        {"item": "elysiumharvest:tomato"}
+    ],
+    "result": {
+        "id": "elysiumharvest:borscht",
+        "count": 1
+    }
+}

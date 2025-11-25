@@ -2,7 +2,10 @@ package net.vergusha.elysiumharvest.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -78,24 +81,33 @@ public class QazanBlock extends BaseEntityBlock {
             if (blockEntity instanceof QazanBlockEntity qazanEntity) {
                 ItemStack handItem = player.getMainHandItem();
                 
-                // Если игрок держит пустую миску и есть готовая еда
-                if (handItem.is(Items.BOWL) && qazanEntity.hasResult()) {
-                    ItemStack result = qazanEntity.extractResult();
-                    
-                    // Уменьшаем стак мисок
-                    if (!player.getAbilities().instabuild) {
-                        handItem.shrink(1);
+                // Если есть готовая еда - её можно забрать ТОЛЬКО миской
+                if (qazanEntity.hasResult()) {
+                    if (handItem.is(Items.BOWL)) {
+                        ItemStack result = qazanEntity.extractResult();
+                        
+                        // Уменьшаем стак мисок
+                        if (!player.getAbilities().instabuild) {
+                            handItem.shrink(1);
+                        }
+                        
+                        // Даём игроку готовую еду
+                        if (!player.getInventory().add(result)) {
+                            player.drop(result, false);
+                        }
+                        
+                        // Звук зачерпывания
+                        level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        
+                        return InteractionResult.SUCCESS;
+                    } else {
+                        // Показываем сообщение что нужна миска
+                        player.displayClientMessage(Component.translatable("message.elysiumharvest.qazan.need_bowl"), true);
+                        return InteractionResult.CONSUME;
                     }
-                    
-                    // Даем игроку готовую еду
-                    if (!player.getInventory().add(result)) {
-                        player.drop(result, false);
-                    }
-                    
-                    return InteractionResult.SUCCESS;
                 }
 
-                // Иначе открываем GUI
+                // Если нет готовой еды - открываем GUI для добавления ингредиентов
                 if (player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.openMenu(qazanEntity);
                 }
@@ -105,15 +117,14 @@ public class QazanBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
-    @SuppressWarnings("deprecation")
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (!state.is(newState.getBlock())) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof QazanBlockEntity qazanEntity) {
+    @Override
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof QazanBlockEntity qazanEntity) {
+            if (!level.isClientSide()) {
                 Containers.dropContents(level, pos, qazanEntity);
-                level.updateNeighbourForOutputSignal(pos, this);
             }
-            level.removeBlockEntity(pos);
         }
+        return super.playerWillDestroy(level, pos, state, player);
     }
 }
