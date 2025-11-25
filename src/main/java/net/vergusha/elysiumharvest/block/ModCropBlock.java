@@ -21,8 +21,8 @@ import java.util.function.Supplier;
 public class ModCropBlock extends CropBlock {
     public static final int MAX_AGE = 7;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_7;
-    
-    private static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[]{
+
+    private static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[] {
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D),
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D),
@@ -32,14 +32,11 @@ public class ModCropBlock extends CropBlock {
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D),
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)
     };
-    
+
     private final Supplier<? extends ItemLike> seedSupplier;
-    
-    public static final MapCodec<ModCropBlock> CODEC = RecordCodecBuilder.mapCodec(instance ->
-            instance.group(
-                    propertiesCodec()
-            ).apply(instance, props -> new ModCropBlock(props, () -> null))
-    );
+
+    public static final MapCodec<ModCropBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            propertiesCodec()).apply(instance, props -> new ModCropBlock(props, () -> null)));
 
     public ModCropBlock(Properties properties, Supplier<? extends ItemLike> seedSupplier) {
         super(properties);
@@ -78,12 +75,13 @@ public class ModCropBlock extends CropBlock {
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (!level.isAreaLoaded(pos, 1)) return;
+        if (!level.isAreaLoaded(pos, 1))
+            return;
         if (level.getRawBrightness(pos, 0) >= 9) {
             int age = this.getAge(state);
             if (age < this.getMaxAge()) {
                 float growthSpeed = getGrowthSpeed(state, level, pos);
-                if (random.nextInt((int)(25.0F / growthSpeed) + 1) == 0) {
+                if (random.nextInt((int) (25.0F / growthSpeed) + 1) == 0) {
                     level.setBlock(pos, this.getStateForAge(age + 1), 2);
                 }
             }

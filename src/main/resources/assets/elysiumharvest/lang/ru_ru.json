@@ -6,7 +6,6 @@
     "block.elysiumharvest.qazan": "Казан",
     "container.elysiumharvest.qazan": "Казан",
     "message.elysiumharvest.qazan.need_bowl": "Вам нужна миска, чтобы забрать еду!",
-    
     "item.elysiumharvest.florite": "Флорит",
     "item.elysiumharvest.florite_ingot": "Флоритовый Слиток",
     "item.elysiumharvest.cherry": "Вишня",
@@ -20,7 +19,6 @@
     "item.elysiumharvest.florite_chestplate": "Флоритовый Нагрудник",
     "item.elysiumharvest.florite_leggings": "Флоритовые Поножи",
     "item.elysiumharvest.florite_boots": "Флоритовые Сапоги",
-    
     "item.elysiumharvest.tomato": "Томат",
     "item.elysiumharvest.tomato_seeds": "Семена Томата",
     "item.elysiumharvest.onion": "Лук",
@@ -40,7 +38,6 @@
     "item.elysiumharvest.lettuce": "Салат",
     "item.elysiumharvest.lettuce_seeds": "Семена Салата",
     "item.elysiumharvest.ginger": "Имбирь",
-    
     "item.elysiumharvest.vegetable_soup": "Овощной Суп",
     "item.elysiumharvest.borscht": "Борщ",
     "item.elysiumharvest.stew": "Рагу",
@@ -48,7 +45,6 @@
     "item.elysiumharvest.corn_soup": "Кукурузная Похлёбка",
     "item.elysiumharvest.salad": "Салат",
     "item.elysiumharvest.ginger_tea": "Имбирный Чай",
-    
     "tooltip.elysiumharvest.florite_armor_set": "Бонус Набора: Ускоряет рост растений рядом",
     "effect.elysiumharvest.florite_set_bonus": "Флоритовое Благословение",
     "elysiumharvest.configuration.title": "Конфигурация Элизиум Урожай",

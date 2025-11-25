@@ -6,7 +6,6 @@
   "block.elysiumharvest.qazan": "Qazan",
   "container.elysiumharvest.qazan": "Qazan",
   "message.elysiumharvest.qazan.need_bowl": "You need a bowl to collect the food!",
-  
   "item.elysiumharvest.florite": "Florite",
   "item.elysiumharvest.florite_ingot": "Florite Ingot",
   "item.elysiumharvest.cherry": "Cherry",
@@ -20,7 +19,6 @@
   "item.elysiumharvest.florite_chestplate": "Florite Chestplate",
   "item.elysiumharvest.florite_leggings": "Florite Leggings",
   "item.elysiumharvest.florite_boots": "Florite Boots",
-  
   "item.elysiumharvest.tomato": "Tomato",
   "item.elysiumharvest.tomato_seeds": "Tomato Seeds",
   "item.elysiumharvest.onion": "Onion",
@@ -40,7 +38,6 @@
   "item.elysiumharvest.lettuce": "Lettuce",
   "item.elysiumharvest.lettuce_seeds": "Lettuce Seeds",
   "item.elysiumharvest.ginger": "Ginger",
-  
   "item.elysiumharvest.vegetable_soup": "Vegetable Soup",
   "item.elysiumharvest.borscht": "Borscht",
   "item.elysiumharvest.stew": "Stew",
@@ -48,7 +45,6 @@
   "item.elysiumharvest.corn_soup": "Corn Soup",
   "item.elysiumharvest.salad": "Salad",
   "item.elysiumharvest.ginger_tea": "Ginger Tea",
-  
   "tooltip.elysiumharvest.florite_armor_set": "Set Bonus: Accelerates crop growth nearby",
   "effect.elysiumharvest.florite_set_bonus": "Florite Blessing",
   "elysiumharvest.configuration.title": "Elysium Harvest Configs",

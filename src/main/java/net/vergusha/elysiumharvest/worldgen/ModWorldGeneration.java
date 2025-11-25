@@ -31,22 +31,23 @@ import java.util.List;
  * Wild crops can spawn in plains, forests, and other suitable biomes.
  */
 public class ModWorldGeneration {
-    
+
     public static final String MODID = ElysiumHarvest.MODID;
-    
+
     // Resource keys for configured features
     public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_TOMATOES = createConfiguredKey("wild_tomatoes");
     public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_ONIONS = createConfiguredKey("wild_onions");
     public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_CUCUMBERS = createConfiguredKey("wild_cucumbers");
     public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_CABBAGES = createConfiguredKey("wild_cabbages");
     public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_GARLIC = createConfiguredKey("wild_garlic");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_BELL_PEPPERS = createConfiguredKey("wild_bell_peppers");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_BELL_PEPPERS = createConfiguredKey(
+            "wild_bell_peppers");
     public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_EGGPLANTS = createConfiguredKey("wild_eggplants");
     public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_CORN = createConfiguredKey("wild_corn");
     public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_BROCCOLI = createConfiguredKey("wild_broccoli");
     public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_LETTUCE = createConfiguredKey("wild_lettuce");
     public static final ResourceKey<ConfiguredFeature<?, ?>> WILD_GINGER = createConfiguredKey("wild_ginger");
-    
+
     // Resource keys for placed features
     public static final ResourceKey<PlacedFeature> WILD_TOMATOES_PLACED = createPlacedKey("wild_tomatoes");
     public static final ResourceKey<PlacedFeature> WILD_ONIONS_PLACED = createPlacedKey("wild_onions");
@@ -59,11 +60,11 @@ public class ModWorldGeneration {
     public static final ResourceKey<PlacedFeature> WILD_BROCCOLI_PLACED = createPlacedKey("wild_broccoli");
     public static final ResourceKey<PlacedFeature> WILD_LETTUCE_PLACED = createPlacedKey("wild_lettuce");
     public static final ResourceKey<PlacedFeature> WILD_GINGER_PLACED = createPlacedKey("wild_ginger");
-    
+
     private static ResourceKey<ConfiguredFeature<?, ?>> createConfiguredKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.fromNamespaceAndPath(MODID, name));
     }
-    
+
     private static ResourceKey<PlacedFeature> createPlacedKey(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(MODID, name));
     }

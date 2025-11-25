@@ -30,15 +30,14 @@ import net.vergusha.elysiumharvest.blockentity.QazanBlockEntity;
 
 public class QazanBlock extends BaseEntityBlock {
     public static final MapCodec<QazanBlock> CODEC = simpleCodec(QazanBlock::new);
-    
+
     private static final VoxelShape SHAPE = Shapes.or(
             Block.box(2.0D, 1.0D, 2.0D, 14.0D, 3.0D, 14.0D),
             Block.box(3.0D, 0.0D, 3.0D, 13.0D, 1.0D, 13.0D),
             Block.box(1.0D, 3.0D, 1.0D, 15.0D, 5.0D, 2.0D),
             Block.box(1.0D, 3.0D, 14.0D, 15.0D, 5.0D, 15.0D),
             Block.box(1.0D, 3.0D, 1.0D, 2.0D, 5.0D, 15.0D),
-            Block.box(14.0D, 3.0D, 1.0D, 15.0D, 5.0D, 15.0D)
-    );
+            Block.box(14.0D, 3.0D, 1.0D, 15.0D, 5.0D, 15.0D));
 
     public QazanBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -70,39 +69,44 @@ public class QazanBlock extends BaseEntityBlock {
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return !level.isClientSide() ? createTickerHelper(type, ElysiumHarvest.QAZAN_BLOCK_ENTITY.get(), QazanBlockEntity::serverTick) : null;
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
+            BlockEntityType<T> type) {
+        return !level.isClientSide()
+                ? createTickerHelper(type, ElysiumHarvest.QAZAN_BLOCK_ENTITY.get(), QazanBlockEntity::serverTick)
+                : null;
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
+            BlockHitResult hitResult) {
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof QazanBlockEntity qazanEntity) {
                 ItemStack handItem = player.getMainHandItem();
-                
+
                 // Если есть готовая еда - её можно забрать ТОЛЬКО миской
                 if (qazanEntity.hasResult()) {
                     if (handItem.is(Items.BOWL)) {
                         ItemStack result = qazanEntity.extractResult();
-                        
+
                         // Уменьшаем стак мисок
                         if (!player.getAbilities().instabuild) {
                             handItem.shrink(1);
                         }
-                        
+
                         // Даём игроку готовую еду
                         if (!player.getInventory().add(result)) {
                             player.drop(result, false);
                         }
-                        
+
                         // Звук зачерпывания
                         level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-                        
+
                         return InteractionResult.SUCCESS;
                     } else {
                         // Показываем сообщение что нужна миска
-                        player.displayClientMessage(Component.translatable("message.elysiumharvest.qazan.need_bowl"), true);
+                        player.displayClientMessage(Component.translatable("message.elysiumharvest.qazan.need_bowl"),
+                                true);
                         return InteractionResult.CONSUME;
                     }
                 }

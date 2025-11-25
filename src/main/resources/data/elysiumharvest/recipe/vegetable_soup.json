@@ -1,9 +1,15 @@
 {
     "type": "elysiumharvest:qazan_cooking",
     "ingredients": [
-        {"item": "minecraft:potato"},
-        {"item": "minecraft:carrot"},
-        {"item": "elysiumharvest:onion"}
+        {
+            "item": "minecraft:potato"
+        },
+        {
+            "item": "minecraft:carrot"
+        },
+        {
+            "item": "elysiumharvest:onion"
+        }
     ],
     "result": {
         "id": "elysiumharvest:vegetable_soup",

@@ -1,10 +1,18 @@
 {
     "type": "elysiumharvest:qazan_cooking",
     "ingredients": [
-        {"item": "elysiumharvest:corn"},
-        {"item": "elysiumharvest:corn"},
-        {"item": "elysiumharvest:onion"},
-        {"item": "minecraft:potato"}
+        {
+            "item": "elysiumharvest:corn"
+        },
+        {
+            "item": "elysiumharvest:corn"
+        },
+        {
+            "item": "elysiumharvest:onion"
+        },
+        {
+            "item": "minecraft:potato"
+        }
     ],
     "result": {
         "id": "elysiumharvest:corn_soup",

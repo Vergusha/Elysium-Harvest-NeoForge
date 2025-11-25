@@ -1,9 +1,15 @@
 {
     "type": "elysiumharvest:qazan_cooking",
     "ingredients": [
-        {"item": "elysiumharvest:ginger"},
-        {"item": "minecraft:sugar"},
-        {"item": "minecraft:apple"}
+        {
+            "item": "elysiumharvest:ginger"
+        },
+        {
+            "item": "minecraft:sugar"
+        },
+        {
+            "item": "minecraft:apple"
+        }
     ],
     "result": {
         "id": "elysiumharvest:ginger_tea",

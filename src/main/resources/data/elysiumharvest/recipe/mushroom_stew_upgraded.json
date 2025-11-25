@@ -1,10 +1,18 @@
 {
     "type": "elysiumharvest:qazan_cooking",
     "ingredients": [
-        {"item": "minecraft:red_mushroom"},
-        {"item": "minecraft:brown_mushroom"},
-        {"item": "minecraft:potato"},
-        {"item": "elysiumharvest:onion"}
+        {
+            "item": "minecraft:red_mushroom"
+        },
+        {
+            "item": "minecraft:brown_mushroom"
+        },
+        {
+            "item": "minecraft:potato"
+        },
+        {
+            "item": "elysiumharvest:onion"
+        }
     ],
     "result": {
         "id": "elysiumharvest:mushroom_stew_upgraded",

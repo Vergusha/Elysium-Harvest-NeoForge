@@ -148,85 +148,103 @@ public class ElysiumHarvest {
         // ===== КУЛЬТУРЫ (ОВОЩИ/ФРУКТЫ) - ПРЕДМЕТЫ =====
         // Томаты
         public static final DeferredItem<Item> TOMATO = ITEMS.registerItem("tomato",
-                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build())));
+                        props -> new Item(props.food(
+                                        new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build())));
         public static final DeferredItem<Item> TOMATO_SEEDS = ITEMS.registerItem("tomato_seeds", Item::new);
         // Лук (семена и урожай - один предмет)
         public static final DeferredItem<Item> ONION = ITEMS.registerItem("onion",
-                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3f).build())));
+                        props -> new Item(props.food(
+                                        new FoodProperties.Builder().nutrition(2).saturationModifier(0.3f).build())));
         // Огурец
         public static final DeferredItem<Item> CUCUMBER = ITEMS.registerItem("cucumber",
-                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.3f).build())));
+                        props -> new Item(props.food(
+                                        new FoodProperties.Builder().nutrition(3).saturationModifier(0.3f).build())));
         public static final DeferredItem<Item> CUCUMBER_SEEDS = ITEMS.registerItem("cucumber_seeds", Item::new);
         // Капуста
         public static final DeferredItem<Item> CABBAGE = ITEMS.registerItem("cabbage",
-                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.5f).build())));
+                        props -> new Item(props.food(
+                                        new FoodProperties.Builder().nutrition(4).saturationModifier(0.5f).build())));
         public static final DeferredItem<Item> CABBAGE_SEEDS = ITEMS.registerItem("cabbage_seeds", Item::new);
         // Чеснок (семена и урожай - один предмет)
         public static final DeferredItem<Item> GARLIC = ITEMS.registerItem("garlic",
-                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2f).build())));
+                        props -> new Item(props.food(
+                                        new FoodProperties.Builder().nutrition(2).saturationModifier(0.2f).build())));
         // Болгарский перец
         public static final DeferredItem<Item> BELL_PEPPER = ITEMS.registerItem("bell_pepper",
-                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build())));
+                        props -> new Item(props.food(
+                                        new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build())));
         public static final DeferredItem<Item> BELL_PEPPER_SEEDS = ITEMS.registerItem("bell_pepper_seeds", Item::new);
         // Баклажан
         public static final DeferredItem<Item> EGGPLANT = ITEMS.registerItem("eggplant",
-                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build())));
+                        props -> new Item(props.food(
+                                        new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).build())));
         public static final DeferredItem<Item> EGGPLANT_SEEDS = ITEMS.registerItem("eggplant_seeds", Item::new);
         // Кукуруза
         public static final DeferredItem<Item> CORN = ITEMS.registerItem("corn",
-                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.5f).build())));
+                        props -> new Item(props.food(
+                                        new FoodProperties.Builder().nutrition(4).saturationModifier(0.5f).build())));
         public static final DeferredItem<Item> CORN_SEEDS = ITEMS.registerItem("corn_seeds", Item::new);
         // Брокколи
         public static final DeferredItem<Item> BROCCOLI = ITEMS.registerItem("broccoli",
-                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.5f).build())));
+                        props -> new Item(props.food(
+                                        new FoodProperties.Builder().nutrition(4).saturationModifier(0.5f).build())));
         public static final DeferredItem<Item> BROCCOLI_SEEDS = ITEMS.registerItem("broccoli_seeds", Item::new);
         // Салат
         public static final DeferredItem<Item> LETTUCE = ITEMS.registerItem("lettuce",
-                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3f).build())));
+                        props -> new Item(props.food(
+                                        new FoodProperties.Builder().nutrition(2).saturationModifier(0.3f).build())));
         public static final DeferredItem<Item> LETTUCE_SEEDS = ITEMS.registerItem("lettuce_seeds", Item::new);
         // Имбирь (семена и урожай - один предмет)
         public static final DeferredItem<Item> GINGER = ITEMS.registerItem("ginger",
-                        props -> new Item(props.food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.2f).build())));
+                        props -> new Item(props.food(
+                                        new FoodProperties.Builder().nutrition(2).saturationModifier(0.2f).build())));
 
         // ===== ГОТОВЫЕ БЛЮДА ДЛЯ КАЗАНА =====
         // Овощной суп
         public static final DeferredItem<Item> VEGETABLE_SOUP = ITEMS.registerItem("vegetable_soup",
                         props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.BOWL)
-                                        .food(new FoodProperties.Builder().nutrition(7).saturationModifier(0.9f).build())));
+                                        .food(new FoodProperties.Builder().nutrition(7).saturationModifier(0.9f)
+                                                        .build())));
         // Борщ
         public static final DeferredItem<Item> BORSCHT = ITEMS.registerItem("borscht",
                         props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.BOWL)
-                                        .food(new FoodProperties.Builder().nutrition(10).saturationModifier(1.2f).build())));
+                                        .food(new FoodProperties.Builder().nutrition(10).saturationModifier(1.2f)
+                                                        .build())));
         // Рагу
         public static final DeferredItem<Item> STEW = ITEMS.registerItem("stew",
                         props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.BOWL)
-                                        .food(new FoodProperties.Builder().nutrition(9).saturationModifier(1.1f).build())));
+                                        .food(new FoodProperties.Builder().nutrition(9).saturationModifier(1.1f)
+                                                        .build())));
         // Грибной суп
         public static final DeferredItem<Item> MUSHROOM_STEW_UPGRADED = ITEMS.registerItem("mushroom_stew_upgraded",
                         props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.BOWL)
-                                        .food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0f).build())));
+                                        .food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0f)
+                                                        .build())));
         // Кукурузная похлёбка
         public static final DeferredItem<Item> CORN_SOUP = ITEMS.registerItem("corn_soup",
                         props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.BOWL)
-                                        .food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.8f).build())));
+                                        .food(new FoodProperties.Builder().nutrition(6).saturationModifier(0.8f)
+                                                        .build())));
         // Салат
         public static final DeferredItem<Item> SALAD = ITEMS.registerItem("salad",
                         props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.BOWL)
-                                        .food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.7f).build())));
+                                        .food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.7f)
+                                                        .build())));
         // Имбирный чай
         public static final DeferredItem<Item> GINGER_TEA = ITEMS.registerItem("ginger_tea",
                         props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.GLASS_BOTTLE)
-                                        .food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.6f).build())));
+                                        .food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.6f)
+                                                        .build())));
 
         // Свойства для культур
         private static BlockBehaviour.Properties cropProperties() {
                 return BlockBehaviour.Properties.of()
-                        .mapColor(MapColor.PLANT)
-                        .noCollision()
-                        .randomTicks()
-                        .instabreak()
-                        .sound(SoundType.CROP)
-                        .pushReaction(PushReaction.DESTROY);
+                                .mapColor(MapColor.PLANT)
+                                .noCollision()
+                                .randomTicks()
+                                .instabreak()
+                                .sound(SoundType.CROP)
+                                .pushReaction(PushReaction.DESTROY);
         }
 
         // ===== КУЛЬТУРЫ (CROP BLOCKS) =====
@@ -359,7 +377,7 @@ public class ElysiumHarvest {
                                                 output.accept(DEEPSLATE_FLORITE_ORE_ITEM.get());
                                                 output.accept(RAW_FLORITE_BLOCK_ITEM.get());
                                                 output.accept(FLORITE_BLOCK_ITEM.get());
-                                                
+
                                                 // Инструменты и броня
                                                 output.accept(FLORITE_SWORD.get());
                                                 output.accept(FLORITE_PICKAXE.get());
@@ -370,10 +388,10 @@ public class ElysiumHarvest {
                                                 output.accept(FLORITE_CHESTPLATE.get());
                                                 output.accept(FLORITE_LEGGINGS.get());
                                                 output.accept(FLORITE_BOOTS.get());
-                                                
+
                                                 // Казан
                                                 output.accept(QAZAN_ITEM.get());
-                                                
+
                                                 // Культуры - семена
                                                 output.accept(TOMATO_SEEDS.get());
                                                 output.accept(CUCUMBER_SEEDS.get());
@@ -383,12 +401,12 @@ public class ElysiumHarvest {
                                                 output.accept(CORN_SEEDS.get());
                                                 output.accept(BROCCOLI_SEEDS.get());
                                                 output.accept(LETTUCE_SEEDS.get());
-                                                
+
                                                 // Культуры - овощи (семена и урожай - одно)
                                                 output.accept(ONION.get());
                                                 output.accept(GARLIC.get());
                                                 output.accept(GINGER.get());
-                                                
+
                                                 // Культуры - урожай
                                                 output.accept(TOMATO.get());
                                                 output.accept(CUCUMBER.get());
@@ -398,7 +416,7 @@ public class ElysiumHarvest {
                                                 output.accept(CORN.get());
                                                 output.accept(BROCCOLI.get());
                                                 output.accept(LETTUCE.get());
-                                                
+
                                                 // Еда
                                                 output.accept(CHERRY.get());
                                                 output.accept(HARVEST_STEW.get());

@@ -25,11 +25,11 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
     public static final int INGREDIENT_SLOTS = 6;
     public static final int RESULT_SLOT = 6;
     public static final int CONTAINER_SIZE = 7;
-    
+
     private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
     private int cookingProgress = 0;
     private int cookingTotalTime = 200; // 10 секунд (200 тиков)
-    
+
     protected final ContainerData dataAccess = new ContainerData() {
         @Override
         public int get(int index) {
@@ -73,7 +73,7 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
 
     @Override
     public boolean isEmpty() {
-        for(ItemStack itemstack : this.items) {
+        for (ItemStack itemstack : this.items) {
             if (!itemstack.isEmpty()) {
                 return false;
             }
@@ -125,20 +125,21 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
     public void clearContent() {
         this.items.clear();
     }
-    
+
     public static void serverTick(Level level, BlockPos pos, BlockState state, QazanBlockEntity blockEntity) {
-        if (level == null || level.isClientSide()) return;
+        if (level == null || level.isClientSide())
+            return;
 
         boolean isHeated = isHeatedFromBelow(level, pos);
-        
+
         if (isHeated && blockEntity.canCook()) {
             blockEntity.cookingProgress++;
-            
+
             if (blockEntity.cookingProgress >= blockEntity.cookingTotalTime) {
                 blockEntity.cookItem();
                 blockEntity.cookingProgress = 0;
             }
-            
+
             blockEntity.setChanged();
         } else if (blockEntity.cookingProgress > 0) {
             blockEntity.cookingProgress = Math.max(0, blockEntity.cookingProgress - 2);
@@ -149,12 +150,12 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
     private static boolean isHeatedFromBelow(Level level, BlockPos pos) {
         BlockPos below = pos.below();
         BlockState belowState = level.getBlockState(below);
-        
+
         // Казан готовит ТОЛЬКО над активным костром (обычным или душевным)
         if (belowState.is(Blocks.CAMPFIRE) || belowState.is(Blocks.SOUL_CAMPFIRE)) {
             return belowState.getValue(BlockStateProperties.LIT);
         }
-        
+
         return false;
     }
 
@@ -170,21 +171,22 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
 
         ItemStack resultSlot = this.items.get(RESULT_SLOT);
         ItemStack recipeResult = recipe.result();
-        
+
         if (resultSlot.isEmpty()) {
             return true;
         }
-        
+
         if (!ItemStack.isSameItemSameComponents(resultSlot, recipeResult)) {
             return false;
         }
-        
+
         return resultSlot.getCount() + recipeResult.getCount() <= resultSlot.getMaxStackSize();
     }
 
     private void cookItem() {
         QazanRecipe recipe = getMatchingRecipe();
-        if (recipe == null) return;
+        if (recipe == null)
+            return;
 
         ItemStack result = recipe.result().copy();
         ItemStack resultSlot = this.items.get(RESULT_SLOT);
@@ -213,8 +215,9 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
     }
 
     private QazanRecipe getMatchingRecipe() {
-        if (this.level == null) return null;
-        
+        if (this.level == null)
+            return null;
+
         // Создаем RecipeInput из нашего инвентаря
         RecipeInput recipeInput = new RecipeInput() {
             @Override
@@ -227,11 +230,12 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
                 return INGREDIENT_SLOTS;
             }
         };
-        
+
         // Проверяем все рецепты вручную
         // TODO: Fix for 1.21.10 - getRecipeManager() API changed
-        if (this.level.isClientSide()) return null;
-        
+        if (this.level.isClientSide())
+            return null;
+
         try {
             // Temporary workaround - iterate through all recipes
             for (RecipeHolder<?> holder : this.level.getServer().getRecipeManager().getRecipes()) {
@@ -244,7 +248,7 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
         } catch (Exception e) {
             // Fallback if API doesn't work
         }
-        
+
         return null;
     }
 
