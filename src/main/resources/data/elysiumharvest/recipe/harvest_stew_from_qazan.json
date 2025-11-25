@@ -1,18 +1,10 @@
 {
     "type": "elysiumharvest:qazan_cooking",
     "ingredients": [
-        {
-            "item": "minecraft:beetroot"
-        },
-        {
-            "item": "minecraft:carrot"
-        },
-        {
-            "item": "minecraft:potato"
-        },
-        {
-            "item": "elysiumharvest:cherry"
-        }
+        "minecraft:beetroot",
+        "minecraft:carrot",
+        "minecraft:potato",
+        "elysiumharvest:cherry"
     ],
     "result": {
         "id": "elysiumharvest:harvest_stew",

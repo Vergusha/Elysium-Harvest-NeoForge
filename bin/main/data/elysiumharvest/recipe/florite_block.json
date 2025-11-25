@@ -7,12 +7,10 @@
     "FFF"
   ],
   "key": {
-    "F": {
-      "item": "elysiumharvest:florite"
-    }
+    "F": "elysiumharvest:florite"
   },
   "result": {
-    "item": "elysiumharvest:florite_block",
+    "id": "elysiumharvest:florite_block",
     "count": 1
   }
 }

@@ -249,38 +249,38 @@ public class ElysiumHarvest {
 
         // ===== КУЛЬТУРЫ (CROP BLOCKS) =====
         // Томаты
-        public static final DeferredBlock<ModCropBlock> TOMATO_CROP = BLOCKS.register("tomato_crop",
-                        () -> new ModCropBlock(cropProperties(), () -> TOMATO_SEEDS.get()));
+        public static final DeferredBlock<ModCropBlock> TOMATO_CROP = BLOCKS.registerBlock("tomato_crop",
+                        props -> new ModCropBlock(props, () -> TOMATO_SEEDS.get()), cropProperties());
         // Лук
-        public static final DeferredBlock<ModCropBlock> ONION_CROP = BLOCKS.register("onion_crop",
-                        () -> new ModCropBlock(cropProperties(), () -> ONION.get()));
+        public static final DeferredBlock<ModCropBlock> ONION_CROP = BLOCKS.registerBlock("onion_crop",
+                        props -> new ModCropBlock(props, () -> ONION.get()), cropProperties());
         // Огурец
-        public static final DeferredBlock<ModCropBlock> CUCUMBER_CROP = BLOCKS.register("cucumber_crop",
-                        () -> new ModCropBlock(cropProperties(), () -> CUCUMBER_SEEDS.get()));
+        public static final DeferredBlock<ModCropBlock> CUCUMBER_CROP = BLOCKS.registerBlock("cucumber_crop",
+                        props -> new ModCropBlock(props, () -> CUCUMBER_SEEDS.get()), cropProperties());
         // Капуста
-        public static final DeferredBlock<ModCropBlock> CABBAGE_CROP = BLOCKS.register("cabbage_crop",
-                        () -> new ModCropBlock(cropProperties(), () -> CABBAGE_SEEDS.get()));
+        public static final DeferredBlock<ModCropBlock> CABBAGE_CROP = BLOCKS.registerBlock("cabbage_crop",
+                        props -> new ModCropBlock(props, () -> CABBAGE_SEEDS.get()), cropProperties());
         // Чеснок
-        public static final DeferredBlock<ModCropBlock> GARLIC_CROP = BLOCKS.register("garlic_crop",
-                        () -> new ModCropBlock(cropProperties(), () -> GARLIC.get()));
+        public static final DeferredBlock<ModCropBlock> GARLIC_CROP = BLOCKS.registerBlock("garlic_crop",
+                        props -> new ModCropBlock(props, () -> GARLIC.get()), cropProperties());
         // Болгарский перец
-        public static final DeferredBlock<ModCropBlock> BELL_PEPPER_CROP = BLOCKS.register("bell_pepper_crop",
-                        () -> new ModCropBlock(cropProperties(), () -> BELL_PEPPER_SEEDS.get()));
+        public static final DeferredBlock<ModCropBlock> BELL_PEPPER_CROP = BLOCKS.registerBlock("bell_pepper_crop",
+                        props -> new ModCropBlock(props, () -> BELL_PEPPER_SEEDS.get()), cropProperties());
         // Баклажан
-        public static final DeferredBlock<ModCropBlock> EGGPLANT_CROP = BLOCKS.register("eggplant_crop",
-                        () -> new ModCropBlock(cropProperties(), () -> EGGPLANT_SEEDS.get()));
+        public static final DeferredBlock<ModCropBlock> EGGPLANT_CROP = BLOCKS.registerBlock("eggplant_crop",
+                        props -> new ModCropBlock(props, () -> EGGPLANT_SEEDS.get()), cropProperties());
         // Кукуруза (высокий блок)
-        public static final DeferredBlock<TallCropBlock> CORN_CROP = BLOCKS.register("corn_crop",
-                        () -> new TallCropBlock(cropProperties(), () -> CORN_SEEDS.get()));
+        public static final DeferredBlock<TallCropBlock> CORN_CROP = BLOCKS.registerBlock("corn_crop",
+                        props -> new TallCropBlock(props, () -> CORN_SEEDS.get()), cropProperties());
         // Брокколи
-        public static final DeferredBlock<ModCropBlock> BROCCOLI_CROP = BLOCKS.register("broccoli_crop",
-                        () -> new ModCropBlock(cropProperties(), () -> BROCCOLI_SEEDS.get()));
+        public static final DeferredBlock<ModCropBlock> BROCCOLI_CROP = BLOCKS.registerBlock("broccoli_crop",
+                        props -> new ModCropBlock(props, () -> BROCCOLI_SEEDS.get()), cropProperties());
         // Салат
-        public static final DeferredBlock<ModCropBlock> LETTUCE_CROP = BLOCKS.register("lettuce_crop",
-                        () -> new ModCropBlock(cropProperties(), () -> LETTUCE_SEEDS.get()));
+        public static final DeferredBlock<ModCropBlock> LETTUCE_CROP = BLOCKS.registerBlock("lettuce_crop",
+                        props -> new ModCropBlock(props, () -> LETTUCE_SEEDS.get()), cropProperties());
         // Имбирь
-        public static final DeferredBlock<ModCropBlock> GINGER_CROP = BLOCKS.register("ginger_crop",
-                        () -> new ModCropBlock(cropProperties(), () -> GINGER.get()));
+        public static final DeferredBlock<ModCropBlock> GINGER_CROP = BLOCKS.registerBlock("ginger_crop",
+                        props -> new ModCropBlock(props, () -> GINGER.get()), cropProperties());
 
         // Флорит (руда)
         public static final DeferredItem<Item> FLORITE = ITEMS.registerSimpleItem("florite");

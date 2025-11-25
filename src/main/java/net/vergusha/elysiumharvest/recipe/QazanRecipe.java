@@ -22,8 +22,7 @@ import java.util.List;
 
 public record QazanRecipe(
         List<Ingredient> ingredients,
-        ItemStack result
-) implements Recipe<RecipeInput> {
+        ItemStack result) implements Recipe<RecipeInput> {
 
     @Override
     public boolean matches(RecipeInput container, Level level) {
@@ -42,7 +41,7 @@ public record QazanRecipe(
 
         // Проверяем соответствие ингредиентов
         List<Ingredient> remainingIngredients = new ArrayList<>(ingredients);
-        
+
         for (ItemStack containerItem : containerItems) {
             boolean matched = false;
             for (int i = 0; i < remainingIngredients.size(); i++) {
@@ -101,15 +100,14 @@ public record QazanRecipe(
     }
 
     public static class Serializer implements RecipeSerializer<QazanRecipe> {
+        // Use Ingredient.CODEC directly - it already handles string item IDs in 1.21
         private static final MapCodec<QazanRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Ingredient.CODEC.listOf().fieldOf("ingredients").forGetter(QazanRecipe::ingredients),
-                ItemStack.CODEC.fieldOf("result").forGetter(QazanRecipe::result)
-        ).apply(instance, QazanRecipe::new));
+                ItemStack.CODEC.fieldOf("result").forGetter(QazanRecipe::result)).apply(instance, QazanRecipe::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, QazanRecipe> STREAM_CODEC = StreamCodec.of(
                 Serializer::toNetwork,
-                Serializer::fromNetwork
-        );
+                Serializer::fromNetwork);
 
         @Override
         public MapCodec<QazanRecipe> codec() {

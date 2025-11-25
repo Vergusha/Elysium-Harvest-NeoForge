@@ -1,18 +1,10 @@
 {
     "type": "elysiumharvest:qazan_cooking",
     "ingredients": [
-        {
-            "item": "elysiumharvest:lettuce"
-        },
-        {
-            "item": "elysiumharvest:tomato"
-        },
-        {
-            "item": "elysiumharvest:cucumber"
-        },
-        {
-            "item": "elysiumharvest:onion"
-        }
+        "elysiumharvest:lettuce",
+        "elysiumharvest:tomato",
+        "elysiumharvest:cucumber",
+        "elysiumharvest:onion"
     ],
     "result": {
         "id": "elysiumharvest:salad",

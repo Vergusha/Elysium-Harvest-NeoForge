@@ -1,18 +1,10 @@
 {
     "type": "elysiumharvest:qazan_cooking",
     "ingredients": [
-        {
-            "item": "elysiumharvest:bell_pepper"
-        },
-        {
-            "item": "elysiumharvest:eggplant"
-        },
-        {
-            "item": "elysiumharvest:tomato"
-        },
-        {
-            "item": "elysiumharvest:garlic"
-        }
+        "elysiumharvest:bell_pepper",
+        "elysiumharvest:eggplant",
+        "elysiumharvest:tomato",
+        "elysiumharvest:garlic"
     ],
     "result": {
         "id": "elysiumharvest:stew",
