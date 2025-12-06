@@ -84,19 +84,22 @@ public class QazanBlock extends BaseEntityBlock {
             if (blockEntity instanceof QazanBlockEntity qazanEntity) {
                 ItemStack handItem = player.getMainHandItem();
 
-                // Если есть готовая еда - её можно забрать ТОЛЬКО миской
+                // Если есть готовая еда - её можно забрать ТОЛЬКО нужным контейнером
                 if (qazanEntity.hasResult()) {
-                    if (handItem.is(Items.BOWL)) {
-                        ItemStack result = qazanEntity.extractResult();
+                    ItemStack result = qazanEntity.getItem(QazanBlockEntity.RESULT_SLOT);
+                    boolean needsBottle = result.is(ElysiumHarvest.GINGER_TEA.get());
 
-                        // Уменьшаем стак мисок
+                    if ((needsBottle && handItem.is(Items.GLASS_BOTTLE)) || (!needsBottle && handItem.is(Items.BOWL))) {
+                        ItemStack extractedResult = qazanEntity.extractResult();
+
+                        // Уменьшаем стак контейнеров
                         if (!player.getAbilities().instabuild) {
                             handItem.shrink(1);
                         }
 
                         // Даём игроку готовую еду
-                        if (!player.getInventory().add(result)) {
-                            player.drop(result, false);
+                        if (!player.getInventory().add(extractedResult)) {
+                            player.drop(extractedResult, false);
                         }
 
                         // Звук зачерпывания
@@ -104,9 +107,10 @@ public class QazanBlock extends BaseEntityBlock {
 
                         return InteractionResult.SUCCESS;
                     } else {
-                        // Показываем сообщение что нужна миска
-                        player.displayClientMessage(Component.translatable("message.elysiumharvest.qazan.need_bowl"),
-                                true);
+                        // Показываем сообщение что нужен контейнер
+                        String messageKey = needsBottle ? "message.elysiumharvest.qazan.need_bottle"
+                                : "message.elysiumharvest.qazan.need_bowl";
+                        player.displayClientMessage(Component.translatable(messageKey), true);
                         return InteractionResult.CONSUME;
                     }
                 }

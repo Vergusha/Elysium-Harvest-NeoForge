@@ -59,6 +59,7 @@ import net.vergusha.elysiumharvest.item.FloriteHoeItem;
 import net.vergusha.elysiumharvest.item.FloritePickaxeItem;
 import net.vergusha.elysiumharvest.item.FloriteShovelItem;
 import net.vergusha.elysiumharvest.item.FloriteSwordItem;
+import net.vergusha.elysiumharvest.item.HarvestDrinkItem;
 import net.vergusha.elysiumharvest.item.HarvestStewItem;
 import net.vergusha.elysiumharvest.menu.QazanMenu;
 import net.vergusha.elysiumharvest.recipe.QazanRecipe;
@@ -231,7 +232,7 @@ public class ElysiumHarvest {
                                                         .build())));
         // Имбирный чай
         public static final DeferredItem<Item> GINGER_TEA = ITEMS.registerItem("ginger_tea",
-                        props -> new HarvestStewItem(props.stacksTo(16).craftRemainder(Items.GLASS_BOTTLE)
+                        props -> new HarvestDrinkItem(props.stacksTo(16).craftRemainder(Items.GLASS_BOTTLE)
                                         .food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.6f)
                                                         .build())));
 

@@ -6,6 +6,7 @@
   "block.elysiumharvest.qazan": "Qazan",
   "container.elysiumharvest.qazan": "Qazan",
   "message.elysiumharvest.qazan.need_bowl": "You need a bowl to collect the food!",
+  "message.elysiumharvest.qazan.need_bottle": "You need a glass bottle to collect the drink!",
   "item.elysiumharvest.florite": "Florite",
   "item.elysiumharvest.florite_ingot": "Florite Ingot",
   "item.elysiumharvest.cherry": "Cherry",
