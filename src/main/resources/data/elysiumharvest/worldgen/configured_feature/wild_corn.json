@@ -3,7 +3,7 @@
     "config": {
         "tries": 32,
         "xz_spread": 5,
-        "y_spread": 3,
+        "y_spread": 0,
         "feature": {
             "feature": {
                 "type": "minecraft:simple_block",
@@ -13,13 +13,21 @@
                         "state": {
                             "Name": "elysiumharvest:corn_crop",
                             "Properties": {
-                                "age": "7"
+                                "age": "3"
                             }
                         }
                     }
                 }
             },
-            "placement": []
+            "placement": [
+                {
+                    "type": "minecraft:block_predicate_filter",
+                    "predicate": {
+                        "type": "minecraft:matching_blocks",
+                        "blocks": "minecraft:air"
+                    }
+                }
+            ]
         }
     }
 }

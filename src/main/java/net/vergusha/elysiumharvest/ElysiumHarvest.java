@@ -42,6 +42,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -443,6 +444,9 @@ public class ElysiumHarvest {
                 NeoForge.EVENT_BUS.register(this);
                 modEventBus.addListener(this::addCreative);
                 modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+                if (FMLEnvironment.getDist().isClient()) {
+                        new ElysiumHarvestClient(modContainer, modEventBus);
+                }
         }
 
         private void commonSetup(FMLCommonSetupEvent event) {

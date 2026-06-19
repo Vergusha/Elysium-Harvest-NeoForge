@@ -1,5 +1,7 @@
 package net.vergusha.elysiumharvest.event;
 
+import java.util.List;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -25,8 +27,6 @@ import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.vergusha.elysiumharvest.ElysiumHarvest;
 import net.vergusha.elysiumharvest.item.FloriteHoeItem;
 
-import java.util.List;
-
 @EventBusSubscriber(modid = ElysiumHarvest.MODID)
 public class HoeHarvestHandler {
 
@@ -37,81 +37,21 @@ public class HoeHarvestHandler {
         Level level = event.getLevel();
         BlockPos clickedPos = event.getPos();
 
-        // Проверяем, что в руке мотыга (но не Флоритовая - у неё своя логика)
         if (heldItem.getItem() instanceof HoeItem && !(heldItem.getItem() instanceof FloriteHoeItem)) {
             BlockState targetState = level.getBlockState(clickedPos);
-
-            // Пытаемся собрать урожай (только 1 блок)
             if (tryHarvestCrop(level, clickedPos, targetState, player)) {
-                // Применяем износ инструмента
-                heldItem.hurtAndBreak(1, player,
-                        player.getEquipmentSlotForItem(heldItem));
-
-                // Воспроизводим анимацию взмаха рукой
+                heldItem.hurtAndBreak(1, player, player.getEquipmentSlotForItem(heldItem));
                 player.swing(event.getHand());
-
-                // Отменяем стандартное поведение мотыги (вспашку земли)
                 event.setCanceled(true);
             }
         }
     }
 
-    /**
-     * Пытается собрать урожай и автоматически пересадить его
-     * 
-     * @return true если урожай был собран
-     */
     private static boolean tryHarvestCrop(Level level, BlockPos pos, BlockState state, Player player) {
         Block block = state.getBlock();
 
-        // Проверяем, является ли блок культурой
-        if (block instanceof CropBlock cropBlock) {
-            // Проверяем, полностью ли выросла культура
-            if (cropBlock.isMaxAge(state)) {
-                if (level instanceof ServerLevel serverLevel) {
-                    // Получаем дроп с культуры
-                    LootParams.Builder lootBuilder = new LootParams.Builder(serverLevel)
-                            .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
-                            .withParameter(LootContextParams.BLOCK_STATE, state)
-                            .withParameter(LootContextParams.TOOL, ItemStack.EMPTY);
-
-                    if (player != null) {
-                        lootBuilder.withParameter(LootContextParams.THIS_ENTITY, player);
-                    }
-
-                    List<ItemStack> drops = state.getDrops(lootBuilder);
-
-                    boolean foundSeeds = false;
-
-                    // Дропаем предметы в мир
-                    for (ItemStack drop : drops) {
-                        if (!foundSeeds && areSeedsForCrop(drop.getItem(), block)) {
-                            // Это семена - уменьшаем количество на 1 для пересадки
-                            if (drop.getCount() > 1) {
-                                drop.shrink(1);
-                                spawnItemInWorld(level, pos, drop);
-                            }
-                            foundSeeds = true;
-                        } else {
-                            // Дропаем остальные предметы
-                            spawnItemInWorld(level, pos, drop);
-                        }
-                    }
-
-                    // Воспроизводим звук сбора урожая
-                    level.playSound(null, pos, SoundEvents.CROP_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
-
-                    // Пересаживаем культуру (возвращаем в начальное состояние)
-                    level.setBlock(pos, cropBlock.getStateForAge(0), 11);
-                }
-                return true;
-            }
-        }
-
-        // Также обрабатываем другие типы культур
-        if (isHarvestableCrop(state)) {
+        if (block instanceof CropBlock cropBlock && cropBlock.isMaxAge(state)) {
             if (level instanceof ServerLevel serverLevel) {
-                // Получаем дроп
                 LootParams.Builder lootBuilder = new LootParams.Builder(serverLevel)
                         .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
                         .withParameter(LootContextParams.BLOCK_STATE, state)
@@ -122,16 +62,43 @@ public class HoeHarvestHandler {
                 }
 
                 List<ItemStack> drops = state.getDrops(lootBuilder);
+                boolean consumedForReplant = false;
+                for (ItemStack drop : drops) {
+                    if (!consumedForReplant && isReplantingItem(drop.getItem(), block)) {
+                        consumedForReplant = true;
+                        if (drop.getCount() > 1) {
+                            ItemStack remainingDrop = drop.copy();
+                            remainingDrop.shrink(1);
+                            spawnItemInWorld(level, pos, remainingDrop);
+                        }
+                    } else {
+                        spawnItemInWorld(level, pos, drop);
+                    }
+                }
 
-                // Дропаем все предметы в мир
+                level.playSound(null, pos, SoundEvents.CROP_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.setBlock(pos, cropBlock.getStateForAge(0), 11);
+            }
+            return true;
+        }
+
+        if (isHarvestableCrop(state)) {
+            if (level instanceof ServerLevel serverLevel) {
+                LootParams.Builder lootBuilder = new LootParams.Builder(serverLevel)
+                        .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
+                        .withParameter(LootContextParams.BLOCK_STATE, state)
+                        .withParameter(LootContextParams.TOOL, ItemStack.EMPTY);
+
+                if (player != null) {
+                    lootBuilder.withParameter(LootContextParams.THIS_ENTITY, player);
+                }
+
+                List<ItemStack> drops = state.getDrops(lootBuilder);
                 for (ItemStack drop : drops) {
                     spawnItemInWorld(level, pos, drop);
                 }
 
-                // Воспроизводим звук
                 level.playSound(null, pos, SoundEvents.CROP_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
-
-                // Пересаживаем
                 level.setBlock(pos, getResetStateForCrop(state), 11);
             }
             return true;
@@ -140,42 +107,59 @@ public class HoeHarvestHandler {
         return false;
     }
 
-    /**
-     * Проверяет, являются ли предметы семенами для данной культуры
-     */
-    private static boolean areSeedsForCrop(Item item, Block crop) {
-        if (crop == Blocks.WHEAT && item == Items.WHEAT_SEEDS)
-            return true;
-        if (crop == Blocks.CARROTS && item == Items.CARROT)
-            return true;
-        if (crop == Blocks.POTATOES && item == Items.POTATO)
-            return true;
-        if (crop == Blocks.BEETROOTS && item == Items.BEETROOT_SEEDS)
-            return true;
-        if (crop == Blocks.NETHER_WART && item == Items.NETHER_WART)
-            return true;
-        return false;
+    private static boolean isReplantingItem(Item item, Block crop) {
+        Item expectedSeed = getSeedItemForCrop(crop);
+        return expectedSeed != null && item == expectedSeed;
     }
 
-    /**
-     * Проверяет, является ли культура готовой к сбору урожая
-     */
+    private static Item getSeedItemForCrop(Block crop) {
+        if (crop == Blocks.WHEAT)
+            return Items.WHEAT_SEEDS;
+        if (crop == Blocks.CARROTS)
+            return Items.CARROT;
+        if (crop == Blocks.POTATOES)
+            return Items.POTATO;
+        if (crop == Blocks.BEETROOTS)
+            return Items.BEETROOT_SEEDS;
+        if (crop == Blocks.NETHER_WART)
+            return Items.NETHER_WART;
+        if (crop == ElysiumHarvest.TOMATO_CROP.get())
+            return ElysiumHarvest.TOMATO_SEEDS.get();
+        if (crop == ElysiumHarvest.ONION_CROP.get())
+            return ElysiumHarvest.ONION.get();
+        if (crop == ElysiumHarvest.CUCUMBER_CROP.get())
+            return ElysiumHarvest.CUCUMBER_SEEDS.get();
+        if (crop == ElysiumHarvest.CABBAGE_CROP.get())
+            return ElysiumHarvest.CABBAGE_SEEDS.get();
+        if (crop == ElysiumHarvest.GARLIC_CROP.get())
+            return ElysiumHarvest.GARLIC.get();
+        if (crop == ElysiumHarvest.BELL_PEPPER_CROP.get())
+            return ElysiumHarvest.BELL_PEPPER_SEEDS.get();
+        if (crop == ElysiumHarvest.EGGPLANT_CROP.get())
+            return ElysiumHarvest.EGGPLANT_SEEDS.get();
+        if (crop == ElysiumHarvest.CORN_CROP.get())
+            return ElysiumHarvest.CORN_SEEDS.get();
+        if (crop == ElysiumHarvest.BROCCOLI_CROP.get())
+            return ElysiumHarvest.BROCCOLI_SEEDS.get();
+        if (crop == ElysiumHarvest.LETTUCE_CROP.get())
+            return ElysiumHarvest.LETTUCE_SEEDS.get();
+        if (crop == ElysiumHarvest.GINGER_CROP.get())
+            return ElysiumHarvest.GINGER.get();
+        return null;
+    }
+
     private static boolean isHarvestableCrop(BlockState state) {
         Block block = state.getBlock();
 
-        // Нижний адский нарост
         if (block == Blocks.NETHER_WART) {
-            IntegerProperty ageProperty = (IntegerProperty) state.getBlock().getStateDefinition()
-                    .getProperty("age");
+            IntegerProperty ageProperty = (IntegerProperty) state.getBlock().getStateDefinition().getProperty("age");
             if (ageProperty != null) {
                 return state.getValue(ageProperty) >= 3;
             }
         }
 
-        // Какао-бобы
         if (block == Blocks.COCOA) {
-            IntegerProperty ageProperty = (IntegerProperty) state.getBlock().getStateDefinition()
-                    .getProperty("age");
+            IntegerProperty ageProperty = (IntegerProperty) state.getBlock().getStateDefinition().getProperty("age");
             if (ageProperty != null) {
                 return state.getValue(ageProperty) >= 2;
             }
@@ -184,9 +168,6 @@ public class HoeHarvestHandler {
         return false;
     }
 
-    /**
-     * Получает начальное состояние для пересадки культуры
-     */
     private static BlockState getResetStateForCrop(BlockState state) {
         Block block = state.getBlock();
         IntegerProperty ageProperty = (IntegerProperty) block.getStateDefinition().getProperty("age");
@@ -198,9 +179,6 @@ public class HoeHarvestHandler {
         return state;
     }
 
-    /**
-     * Создаёт предмет в мире
-     */
     private static void spawnItemInWorld(Level level, BlockPos pos, ItemStack stack) {
         if (!stack.isEmpty()) {
             ItemEntity itemEntity = new ItemEntity(level,

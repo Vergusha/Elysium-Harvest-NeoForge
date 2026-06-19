@@ -36,18 +36,21 @@ public class FloriteArmorSetBonusHandler {
         boolean hasFullSet = isWearingFullFloriteArmor(player);
 
         if (hasFullSet) {
-
-            player.addEffect(new MobEffectInstance(
-                    ElysiumHarvest.FLORITE_SET_BONUS_EFFECT,
-                    40,
-                    0,
-                    true, // Ambient
-                    true, // Visible particles
-                    true // Show icon
-            ));
+            MobEffectInstance currentEffect = player.getEffect(ElysiumHarvest.FLORITE_SET_BONUS_EFFECT);
+            if (currentEffect == null || !currentEffect.isInfiniteDuration()) {
+                player.addEffect(new MobEffectInstance(
+                        ElysiumHarvest.FLORITE_SET_BONUS_EFFECT,
+                        MobEffectInstance.INFINITE_DURATION,
+                        0,
+                        true,
+                        true,
+                        true));
+            }
 
             spawnSetBonusParticles(player);
             accelerateCropGrowth(player);
+        } else if (player.hasEffect(ElysiumHarvest.FLORITE_SET_BONUS_EFFECT)) {
+            player.removeEffect(ElysiumHarvest.FLORITE_SET_BONUS_EFFECT);
         }
     }
 

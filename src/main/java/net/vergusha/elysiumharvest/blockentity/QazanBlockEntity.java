@@ -3,20 +3,23 @@ package net.vergusha.elysiumharvest.blockentity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.vergusha.elysiumharvest.ElysiumHarvest;
 import net.vergusha.elysiumharvest.menu.QazanMenu;
 import net.vergusha.elysiumharvest.recipe.QazanRecipe;
@@ -28,7 +31,7 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
 
     private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
     private int cookingProgress = 0;
-    private int cookingTotalTime = 200; // 10 секунд (200 тиков)
+    private int cookingTotalTime = 200;
 
     protected final ContainerData dataAccess = new ContainerData() {
         @Override
@@ -45,6 +48,8 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
             switch (index) {
                 case 0 -> cookingProgress = value;
                 case 1 -> cookingTotalTime = value;
+                default -> {
+                }
             }
         }
 
@@ -58,10 +63,12 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
         super(ElysiumHarvest.QAZAN_BLOCK_ENTITY.get(), pos, state);
     }
 
+    @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
         return new QazanMenu(containerId, inventory, this, this.dataAccess);
     }
 
+    @Override
     public Component getDisplayName() {
         return Component.translatable("container.elysiumharvest.qazan");
     }
@@ -88,22 +95,19 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
 
     @Override
     public ItemStack removeItem(int slot, int amount) {
-        ItemStack itemstack = this.items.get(slot);
+        ItemStack itemstack = ContainerHelper.removeItem(this.items, slot, amount);
         if (!itemstack.isEmpty()) {
-            if (itemstack.getCount() <= amount) {
-                this.items.set(slot, ItemStack.EMPTY);
-            } else {
-                itemstack = itemstack.split(amount);
-            }
+            this.markUpdated();
         }
-        this.setChanged();
         return itemstack;
     }
 
     @Override
     public ItemStack removeItemNoUpdate(int slot) {
-        ItemStack itemstack = this.items.get(slot);
-        this.items.set(slot, ItemStack.EMPTY);
+        ItemStack itemstack = ContainerHelper.takeItem(this.items, slot);
+        if (!itemstack.isEmpty()) {
+            this.markUpdated();
+        }
         return itemstack;
     }
 
@@ -113,7 +117,7 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
         if (stack.getCount() > this.getMaxStackSize()) {
             stack.setCount(this.getMaxStackSize());
         }
-        this.setChanged();
+        this.markUpdated();
     }
 
     @Override
@@ -124,38 +128,57 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
     @Override
     public void clearContent() {
         this.items.clear();
+        this.markUpdated();
+    }
+
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        ContainerHelper.saveAllItems(output, this.items);
+        output.putInt("CookingProgress", this.cookingProgress);
+        output.putInt("CookingTotalTime", this.cookingTotalTime);
+    }
+
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        this.items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(input, this.items);
+        this.cookingProgress = input.getIntOr("CookingProgress", 0);
+        this.cookingTotalTime = input.getIntOr("CookingTotalTime", 200);
+    }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, QazanBlockEntity blockEntity) {
-        if (level == null || level.isClientSide())
+        if (level == null || level.isClientSide()) {
             return;
+        }
 
         boolean isHeated = isHeatedFromBelow(level, pos);
 
         if (isHeated && blockEntity.canCook()) {
             blockEntity.cookingProgress++;
-
             if (blockEntity.cookingProgress >= blockEntity.cookingTotalTime) {
                 blockEntity.cookItem();
                 blockEntity.cookingProgress = 0;
             }
-
-            blockEntity.setChanged();
+            blockEntity.markUpdated();
         } else if (blockEntity.cookingProgress > 0) {
             blockEntity.cookingProgress = Math.max(0, blockEntity.cookingProgress - 2);
-            blockEntity.setChanged();
+            blockEntity.markUpdated();
         }
     }
 
     private static boolean isHeatedFromBelow(Level level, BlockPos pos) {
         BlockPos below = pos.below();
         BlockState belowState = level.getBlockState(below);
-
-        // Казан готовит ТОЛЬКО над активным костром (обычным или душевным)
         if (belowState.is(Blocks.CAMPFIRE) || belowState.is(Blocks.SOUL_CAMPFIRE)) {
             return belowState.getValue(BlockStateProperties.LIT);
         }
-
         return false;
     }
 
@@ -164,40 +187,36 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
             return false;
         }
 
-        QazanRecipe recipe = getMatchingRecipe();
+        QazanRecipe recipe = this.getMatchingRecipe();
         if (recipe == null) {
             return false;
         }
 
         ItemStack resultSlot = this.items.get(RESULT_SLOT);
         ItemStack recipeResult = recipe.result();
-
         if (resultSlot.isEmpty()) {
             return true;
         }
-
         if (!ItemStack.isSameItemSameComponents(resultSlot, recipeResult)) {
             return false;
         }
-
         return resultSlot.getCount() + recipeResult.getCount() <= resultSlot.getMaxStackSize();
     }
 
     private void cookItem() {
-        QazanRecipe recipe = getMatchingRecipe();
-        if (recipe == null)
+        QazanRecipe recipe = this.getMatchingRecipe();
+        if (recipe == null) {
             return;
+        }
 
         ItemStack result = recipe.result().copy();
         ItemStack resultSlot = this.items.get(RESULT_SLOT);
-
         if (resultSlot.isEmpty()) {
             this.items.set(RESULT_SLOT, result);
         } else {
             resultSlot.grow(result.getCount());
         }
 
-        // Уменьшаем количество ингредиентов
         for (int i = 0; i < INGREDIENT_SLOTS; i++) {
             if (!this.items.get(i).isEmpty()) {
                 this.items.get(i).shrink(1);
@@ -215,10 +234,10 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
     }
 
     private QazanRecipe getMatchingRecipe() {
-        if (this.level == null)
+        if (this.level == null || this.level.isClientSide()) {
             return null;
+        }
 
-        // Создаем RecipeInput из нашего инвентаря
         RecipeInput recipeInput = new RecipeInput() {
             @Override
             public ItemStack getItem(int slot) {
@@ -231,35 +250,32 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
             }
         };
 
-        // Проверяем все рецепты вручную
-        // TODO: Fix for 1.21.10 - getRecipeManager() API changed
-        if (this.level.isClientSide())
-            return null;
-
         try {
-            // Temporary workaround - iterate through all recipes
-            for (RecipeHolder<?> holder : this.level.getServer().getRecipeManager().getRecipes()) {
-                if (holder.value() instanceof QazanRecipe recipe) {
-                    if (recipe.matches(recipeInput, this.level)) {
-                        return recipe;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            // Fallback if API doesn't work
+            return this.level.getServer().getRecipeManager()
+                    .getRecipeFor(ElysiumHarvest.QAZAN_RECIPE_TYPE.get(), recipeInput, this.level)
+                    .map(holder -> holder.value())
+                    .orElse(null);
+        } catch (RuntimeException e) {
+            ElysiumHarvest.LOGGER.error("Failed to resolve qazan recipe at {}", this.getBlockPos(), e);
+            return null;
         }
-
-        return null;
     }
 
     public ItemStack extractResult() {
         ItemStack result = this.items.get(RESULT_SLOT).copy();
         this.items.set(RESULT_SLOT, ItemStack.EMPTY);
-        setChanged();
+        this.markUpdated();
         return result;
     }
 
     public boolean hasResult() {
         return !this.items.get(RESULT_SLOT).isEmpty();
+    }
+
+    private void markUpdated() {
+        this.setChanged();
+        if (this.level != null) {
+            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+        }
     }
 }

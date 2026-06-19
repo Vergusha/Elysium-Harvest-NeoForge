@@ -1,27 +1,20 @@
 package net.vergusha.elysiumharvest;
 
-import net.minecraft.client.Minecraft;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.vergusha.elysiumharvest.client.ClientModEvents;
 
-
-@Mod(value = ElysiumHarvest.MODID, dist = Dist.CLIENT)
-
-@EventBusSubscriber(modid = ElysiumHarvest.MODID, value = Dist.CLIENT)
 public class ElysiumHarvestClient {
-    public ElysiumHarvestClient(ModContainer container) {
+    public ElysiumHarvestClient(ModContainer container, IEventBus modEventBus) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        modEventBus.addListener(ElysiumHarvestClient::onClientSetup);
+        modEventBus.addListener(ClientModEvents::registerScreens);
     }
 
-    @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
         ElysiumHarvest.LOGGER.info("HELLO FROM CLIENT SETUP");
-        ElysiumHarvest.LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
     }
 }

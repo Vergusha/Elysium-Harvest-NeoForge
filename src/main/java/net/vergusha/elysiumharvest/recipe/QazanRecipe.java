@@ -59,20 +59,14 @@ public record QazanRecipe(
         return remainingIngredients.isEmpty(); // Все ингредиенты использованы
     }
 
-    // TODO: Fix for 1.21.10 - Recipe interface changed signatures
-    // Removed @Override as method signature doesn't match
     public ItemStack assemble(RecipeInput container, HolderLookup.Provider registries) {
         return result.copy();
     }
 
-    // TODO: Fix for 1.21.10 - Recipe interface changed
-    // Removed @Override as method may not exist in interface
     public boolean canCraftInDimensions(int width, int height) {
         return true;
     }
 
-    // TODO: Fix for 1.21.10 - Recipe interface changed
-    // Removed @Override as method signature doesn't match
     public ItemStack getResultItem(HolderLookup.Provider registries) {
         return result;
     }
@@ -89,9 +83,7 @@ public record QazanRecipe(
 
     @Override
     public RecipeBookCategory recipeBookCategory() {
-        // TODO: Fix for 1.21.10 - RecipeBookCategory API changed
-        // Returning null as we don't know the correct value for this version
-        return null;
+        return new RecipeBookCategory();
     }
 
     @Override
