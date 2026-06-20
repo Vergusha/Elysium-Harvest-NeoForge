@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -27,7 +28,8 @@ import net.vergusha.elysiumharvest.recipe.QazanRecipe;
 public class QazanBlockEntity extends BlockEntity implements Container, MenuProvider {
     public static final int INGREDIENT_SLOTS = 6;
     public static final int RESULT_SLOT = 6;
-    public static final int CONTAINER_SIZE = 7;
+    public static final int BOWL_SLOT = 7;
+    public static final int CONTAINER_SIZE = 8;
 
     private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
     private int cookingProgress = 0;
@@ -192,6 +194,10 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
             return false;
         }
 
+        if (!this.hasRequiredContainer(recipe.result())) {
+            return false;
+        }
+
         ItemStack resultSlot = this.items.get(RESULT_SLOT);
         ItemStack recipeResult = recipe.result();
         if (resultSlot.isEmpty()) {
@@ -216,6 +222,8 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
         } else {
             resultSlot.grow(result.getCount());
         }
+
+        this.items.get(BOWL_SLOT).shrink(1);
 
         for (int i = 0; i < INGREDIENT_SLOTS; i++) {
             if (!this.items.get(i).isEmpty()) {
@@ -270,6 +278,20 @@ public class QazanBlockEntity extends BlockEntity implements Container, MenuProv
 
     public boolean hasResult() {
         return !this.items.get(RESULT_SLOT).isEmpty();
+    }
+
+    public static boolean isContainerItemForResult(ItemStack containerStack, ItemStack resultStack) {
+        if (containerStack.isEmpty() || resultStack.isEmpty()) {
+            return false;
+        }
+
+        return resultStack.is(ElysiumHarvest.GINGER_TEA.get())
+                ? containerStack.is(Items.GLASS_BOTTLE)
+                : containerStack.is(Items.BOWL);
+    }
+
+    private boolean hasRequiredContainer(ItemStack resultStack) {
+        return isContainerItemForResult(this.items.get(BOWL_SLOT), resultStack);
     }
 
     private void markUpdated() {

@@ -2,15 +2,10 @@ package net.vergusha.elysiumharvest.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -32,12 +27,15 @@ public class QazanBlock extends BaseEntityBlock {
     public static final MapCodec<QazanBlock> CODEC = simpleCodec(QazanBlock::new);
 
     private static final VoxelShape SHAPE = Shapes.or(
-            Block.box(2.0D, 1.0D, 2.0D, 14.0D, 3.0D, 14.0D),
-            Block.box(3.0D, 0.0D, 3.0D, 13.0D, 1.0D, 13.0D),
-            Block.box(1.0D, 3.0D, 1.0D, 15.0D, 5.0D, 2.0D),
-            Block.box(1.0D, 3.0D, 14.0D, 15.0D, 5.0D, 15.0D),
-            Block.box(1.0D, 3.0D, 1.0D, 2.0D, 5.0D, 15.0D),
-            Block.box(14.0D, 3.0D, 1.0D, 15.0D, 5.0D, 15.0D));
+            Block.box(2.25D, 0.0D, 2.5D, 13.75D, 0.5D, 13.75D),
+            Block.box(1.75D, 0.5D, 2.5D, 2.25D, 4.25D, 13.75D),
+            Block.box(13.75D, 0.5D, 2.5D, 14.25D, 4.25D, 13.75D),
+            Block.box(2.25D, 0.5D, 2.0D, 13.75D, 4.25D, 2.5D),
+            Block.box(2.25D, 0.5D, 13.75D, 13.75D, 4.25D, 14.25D),
+            Block.box(0.0D, 3.0D, 6.25D, 2.0D, 4.0D, 9.75D),
+            Block.box(14.0D, 3.0D, 6.25D, 16.0D, 4.0D, 9.75D),
+            Block.box(6.25D, 3.0D, 14.0D, 9.75D, 4.0D, 16.0D),
+            Block.box(6.25D, 3.0D, 0.0D, 9.75D, 4.0D, 2.0D));
 
     public QazanBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -81,44 +79,8 @@ public class QazanBlock extends BaseEntityBlock {
             BlockHitResult hitResult) {
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof QazanBlockEntity qazanEntity) {
-                ItemStack handItem = player.getMainHandItem();
-
-                // Если есть готовая еда - её можно забрать ТОЛЬКО нужным контейнером
-                if (qazanEntity.hasResult()) {
-                    ItemStack result = qazanEntity.getItem(QazanBlockEntity.RESULT_SLOT);
-                    boolean needsBottle = result.is(ElysiumHarvest.GINGER_TEA.get());
-
-                    if ((needsBottle && handItem.is(Items.GLASS_BOTTLE)) || (!needsBottle && handItem.is(Items.BOWL))) {
-                        ItemStack extractedResult = qazanEntity.extractResult();
-
-                        // Уменьшаем стак контейнеров
-                        if (!player.getAbilities().instabuild) {
-                            handItem.shrink(1);
-                        }
-
-                        // Даём игроку готовую еду
-                        if (!player.getInventory().add(extractedResult)) {
-                            player.drop(extractedResult, false);
-                        }
-
-                        // Звук зачерпывания
-                        level.playSound(null, pos, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-
-                        return InteractionResult.SUCCESS;
-                    } else {
-                        // Показываем сообщение что нужен контейнер
-                        String messageKey = needsBottle ? "message.elysiumharvest.qazan.need_bottle"
-                                : "message.elysiumharvest.qazan.need_bowl";
-                        player.displayClientMessage(Component.translatable(messageKey), true);
-                        return InteractionResult.CONSUME;
-                    }
-                }
-
-                // Если нет готовой еды - открываем GUI для добавления ингредиентов
-                if (player instanceof ServerPlayer serverPlayer) {
-                    serverPlayer.openMenu(qazanEntity);
-                }
+            if (blockEntity instanceof QazanBlockEntity qazanEntity && player instanceof ServerPlayer serverPlayer) {
+                serverPlayer.openMenu(qazanEntity);
             }
         }
 
@@ -128,10 +90,8 @@ public class QazanBlock extends BaseEntityBlock {
     @Override
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof QazanBlockEntity qazanEntity) {
-            if (!level.isClientSide()) {
-                Containers.dropContents(level, pos, qazanEntity);
-            }
+        if (blockEntity instanceof QazanBlockEntity qazanEntity && !level.isClientSide()) {
+            Containers.dropContents(level, pos, qazanEntity);
         }
         return super.playerWillDestroy(level, pos, state, player);
     }

@@ -19,39 +19,69 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.vergusha.elysiumharvest.ElysiumHarvest;
+import net.vergusha.elysiumharvest.blockentity.QazanBlockEntity;
 import net.vergusha.elysiumharvest.menu.QazanMenu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class QazanScreen extends AbstractContainerScreen<QazanMenu> {
     private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(
             ElysiumHarvest.MODID, "textures/gui/qazan.png");
-    private static final int PANEL_WIDTH = 76;
-    private static final int PANEL_HEIGHT_PADDING = 8;
+    private static final ResourceLocation RECIPES_PANEL = ResourceLocation.fromNamespaceAndPath(
+            ElysiumHarvest.MODID, "textures/gui/qazan_recipes.png");
+    private static final int GUI_WIDTH = 176;
+    private static final int BACKGROUND_WIDTH = 182;
+    private static final int BACKGROUND_HEIGHT = 166;
+    private static final int PANEL_WIDTH = 68;
+    private static final int PANEL_HEIGHT = 166;
     private static final int PANEL_ENTRY_SIZE = 18;
     private static final int PANEL_ENTRY_GAP = 4;
     private static final int PANEL_COLUMNS = 2;
     private static final int PANEL_ROWS = 5;
     private static final int BUTTON_WIDTH = 20;
     private static final int BUTTON_HEIGHT = 18;
-    private static final int BUTTON_GAP = 4;
-    private static final int PANEL_GAP = 4;
+    private static final int PANEL_GAP = 0;
+    private static final int CONTAINER_SLOT_X = 116;
+    private static final int CONTAINER_SLOT_Y = 52;
     private static final int[][] INGREDIENT_SLOT_POSITIONS = {
-            { 44, 17 },
-            { 62, 17 },
-            { 80, 17 },
-            { 44, 35 },
-            { 62, 35 },
-            { 80, 35 }
+            { 40, 17 },
+            { 58, 17 },
+            { 76, 17 },
+            { 40, 35 },
+            { 58, 35 },
+            { 76, 35 }
     };
     private static final int RESULT_SLOT_X = 116;
     private static final int RESULT_SLOT_Y = 26;
+    private static final int PROGRESS_X = 100;
+    private static final int PROGRESS_Y = 16;
+    private static final int PROGRESS_WIDTH = 6;
+    private static final int PROGRESS_HEIGHT = 36;
+    private static final int PROGRESS_TEXTURE_U = 176;
+    private static final int PROGRESS_TEXTURE_V = 0;
+    private static final List<String> QAZAN_RECIPE_FILES = List.of(
+            "borscht.json",
+            "broccoli_soup.json",
+            "corn_soup.json",
+            "ginger_tea.json",
+            "harvest_stew_from_qazan.json",
+            "mushroom_stew_upgraded.json",
+            "roasted_vegetables.json",
+            "salad.json",
+            "stew.json",
+            "vegetable_soup.json");
 
     private final List<DisplayedRecipe> displayedRecipes = new ArrayList<>();
     private ImageButton recipeBookButton;
@@ -60,16 +90,19 @@ public class QazanScreen extends AbstractContainerScreen<QazanMenu> {
 
     public QazanScreen(QazanMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
+        this.imageWidth = GUI_WIDTH;
+        this.imageHeight = BACKGROUND_HEIGHT;
     }
 
     @Override
     protected void init() {
         super.init();
         this.loadDisplayedRecipes();
+        this.titleLabelX = 30;
 
         this.recipeBookButton = this.addRenderableWidget(new ImageButton(
-                this.leftPos - BUTTON_WIDTH - BUTTON_GAP,
-                this.topPos + 5,
+                this.leftPos + 7,
+                this.topPos + 4,
                 BUTTON_WIDTH,
                 BUTTON_HEIGHT,
                 RecipeBookComponent.RECIPE_BUTTON_SPRITES,
@@ -86,18 +119,31 @@ public class QazanScreen extends AbstractContainerScreen<QazanMenu> {
                 this.leftPos, this.topPos,
                 0, 0,
                 this.imageWidth, this.imageHeight,
-                256, 256);
+                BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
 
-        int progress = this.menu.getScaledProgress();
-        if (progress > 0) {
-            graphics.blit(
-                    RenderPipelines.GUI_TEXTURED,
-                    BACKGROUND,
-                    this.leftPos + 103, this.topPos + 26,
-                    176, 0,
-                    progress, 16,
-                    256, 256);
+        this.renderCookingProgress(graphics, this.menu.getScaledProgress());
+    }
+
+    private void renderCookingProgress(GuiGraphics graphics, int progress) {
+        if (progress <= 0) {
+            return;
         }
+
+        int fillHeight = Math.max(1, Math.min(PROGRESS_HEIGHT, progress * PROGRESS_HEIGHT / 24));
+        int targetY = this.topPos + PROGRESS_Y + PROGRESS_HEIGHT - fillHeight;
+        int sourceV = PROGRESS_TEXTURE_V + PROGRESS_HEIGHT - fillHeight;
+
+        graphics.blit(
+                RenderPipelines.GUI_TEXTURED,
+                BACKGROUND,
+                this.leftPos + PROGRESS_X,
+                targetY,
+                PROGRESS_TEXTURE_U,
+                sourceV,
+                PROGRESS_WIDTH,
+                fillHeight,
+                BACKGROUND_WIDTH,
+                BACKGROUND_HEIGHT);
     }
 
     @Override
@@ -108,6 +154,7 @@ public class QazanScreen extends AbstractContainerScreen<QazanMenu> {
             this.renderGhostRecipe(graphics);
             this.renderRecipePanelTooltip(graphics, mouseX, mouseY);
         }
+        this.renderContainerSlotTooltip(graphics, mouseX, mouseY);
         this.renderTooltip(graphics, mouseX, mouseY);
     }
 
@@ -126,11 +173,17 @@ public class QazanScreen extends AbstractContainerScreen<QazanMenu> {
     private void renderRecipesPanel(GuiGraphics graphics, int mouseX, int mouseY) {
         int panelX = this.getPanelX();
         int panelY = this.topPos;
-        int panelHeight = this.imageHeight;
-
-        graphics.fill(panelX, panelY, panelX + PANEL_WIDTH, panelY + panelHeight, 0xFF2A2A2A);
-        graphics.fill(panelX + 1, panelY + 1, panelX + PANEL_WIDTH - 1, panelY + panelHeight - 1, 0xFFC6C6C6);
-        graphics.fill(panelX + 4, panelY + 4, panelX + PANEL_WIDTH - 4, panelY + panelHeight - 4, 0xFF8B8B8B);
+        graphics.blit(
+                RenderPipelines.GUI_TEXTURED,
+                RECIPES_PANEL,
+                panelX,
+                panelY,
+                0,
+                0,
+                PANEL_WIDTH,
+                PANEL_HEIGHT,
+                PANEL_WIDTH,
+                PANEL_HEIGHT);
         graphics.drawCenteredString(this.font, Component.literal("Recipes"), panelX + PANEL_WIDTH / 2, panelY + 8, 0x202020);
 
         int maxRecipes = PANEL_COLUMNS * PANEL_ROWS;
@@ -171,11 +224,19 @@ public class QazanScreen extends AbstractContainerScreen<QazanMenu> {
             graphics.fill(slotX, slotY, slotX + 16, slotY + 16, 0x66FFFFFF);
         }
 
-        if (!this.menu.getSlot(6).hasItem() && !this.selectedRecipe.result().isEmpty()) {
+        if (!this.menu.getSlot(QazanBlockEntity.RESULT_SLOT).hasItem() && !this.selectedRecipe.result().isEmpty()) {
             int resultX = this.leftPos + RESULT_SLOT_X;
             int resultY = this.topPos + RESULT_SLOT_Y;
             graphics.renderFakeItem(this.selectedRecipe.result(), resultX, resultY);
             graphics.fill(resultX, resultY, resultX + 16, resultY + 16, 0x66FFFFFF);
+        }
+
+        if (!this.menu.getSlot(QazanBlockEntity.BOWL_SLOT).hasItem()) {
+            ItemStack requiredContainer = this.getRequiredContainer(this.selectedRecipe.result());
+            int containerX = this.leftPos + CONTAINER_SLOT_X;
+            int containerY = this.topPos + CONTAINER_SLOT_Y;
+            graphics.renderFakeItem(requiredContainer, containerX, containerY);
+            graphics.fill(containerX, containerY, containerX + 16, containerY + 16, 0x66FFFFFF);
         }
     }
 
@@ -191,7 +252,23 @@ public class QazanScreen extends AbstractContainerScreen<QazanMenu> {
         for (ItemStack ingredient : hoveredRecipe.ingredients()) {
             tooltip.add(Component.literal("- ").append(ingredient.getHoverName()));
         }
+        tooltip.add(Component.empty());
+        tooltip.add(Component.literal("Container: ").append(this.getRequiredContainer(hoveredRecipe.result()).getHoverName()));
         graphics.setComponentTooltipForNextFrame(this.font, tooltip, mouseX, mouseY);
+    }
+
+    private void renderContainerSlotTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
+        if (!this.isHovering(CONTAINER_SLOT_X, CONTAINER_SLOT_Y, 16, 16, mouseX, mouseY)
+                || this.menu.getSlot(QazanBlockEntity.BOWL_SLOT).hasItem()) {
+            return;
+        }
+
+        ItemStack container = this.selectedRecipe == null
+                ? new ItemStack(Items.BOWL)
+                : this.getRequiredContainer(this.selectedRecipe.result());
+        graphics.setComponentTooltipForNextFrame(this.font, List.of(
+                Component.literal("Container slot"),
+                container.getHoverName()), mouseX, mouseY);
     }
 
     private DisplayedRecipe getRecipeAt(double mouseX, double mouseY) {
@@ -208,6 +285,7 @@ public class QazanScreen extends AbstractContainerScreen<QazanMenu> {
 
     private void loadDisplayedRecipes() {
         this.displayedRecipes.clear();
+        Set<ResourceLocation> loadedRecipeIds = new LinkedHashSet<>();
 
         Map<ResourceLocation, Resource> resources = this.minecraft.getResourceManager().listResources(
                 "recipe",
@@ -215,18 +293,16 @@ public class QazanScreen extends AbstractContainerScreen<QazanMenu> {
 
         for (Map.Entry<ResourceLocation, Resource> entry : resources.entrySet()) {
             try (BufferedReader reader = entry.getValue().openAsReader()) {
-                JsonObject root = JsonParser.parseReader(reader).getAsJsonObject();
-                if (!root.has("type") || !"elysiumharvest:qazan_cooking".equals(root.get("type").getAsString())) {
-                    continue;
-                }
-
-                List<ItemStack> ingredients = this.parseIngredients(root.getAsJsonArray("ingredients"));
-                ItemStack result = this.parseResult(root.getAsJsonObject("result"));
-                if (!result.isEmpty()) {
-                    this.displayedRecipes.add(new DisplayedRecipe(entry.getKey(), ingredients, result));
-                }
+                this.tryAddRecipe(entry.getKey(), reader, loadedRecipeIds);
             } catch (IOException | RuntimeException exception) {
                 ElysiumHarvest.LOGGER.warn("Failed to load qazan recipe preview from {}", entry.getKey(), exception);
+            }
+        }
+
+        if (this.displayedRecipes.isEmpty()) {
+            for (String fileName : QAZAN_RECIPE_FILES) {
+                ResourceLocation recipeId = ResourceLocation.fromNamespaceAndPath(ElysiumHarvest.MODID, "recipe/" + fileName);
+                this.tryLoadRecipeFromClasspath(recipeId, loadedRecipeIds);
             }
         }
 
@@ -240,6 +316,39 @@ public class QazanScreen extends AbstractContainerScreen<QazanMenu> {
         }
         if (this.selectedRecipe == null && !this.displayedRecipes.isEmpty()) {
             this.selectedRecipe = this.displayedRecipes.get(0);
+        }
+    }
+
+    private void tryLoadRecipeFromClasspath(ResourceLocation recipeId, Set<ResourceLocation> loadedRecipeIds) {
+        String classpathPath = "/data/" + recipeId.getNamespace() + "/" + recipeId.getPath();
+        try (InputStream stream = QazanScreen.class.getResourceAsStream(classpathPath)) {
+            if (stream == null) {
+                ElysiumHarvest.LOGGER.warn("Qazan recipe preview resource not found: {}", classpathPath);
+                return;
+            }
+
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+                this.tryAddRecipe(recipeId, reader, loadedRecipeIds);
+            }
+        } catch (IOException | RuntimeException exception) {
+            ElysiumHarvest.LOGGER.warn("Failed to load qazan recipe preview from classpath {}", classpathPath, exception);
+        }
+    }
+
+    private void tryAddRecipe(ResourceLocation recipeId, BufferedReader reader, Set<ResourceLocation> loadedRecipeIds) {
+        if (!loadedRecipeIds.add(recipeId)) {
+            return;
+        }
+
+        JsonObject root = JsonParser.parseReader(reader).getAsJsonObject();
+        if (!root.has("type") || !"elysiumharvest:qazan_cooking".equals(root.get("type").getAsString())) {
+            return;
+        }
+
+        List<ItemStack> ingredients = this.parseIngredients(root.getAsJsonArray("ingredients"));
+        ItemStack result = this.parseResult(root.getAsJsonObject("result"));
+        if (!result.isEmpty()) {
+            this.displayedRecipes.add(new DisplayedRecipe(recipeId, ingredients, result));
         }
     }
 
@@ -280,13 +389,19 @@ public class QazanScreen extends AbstractContainerScreen<QazanMenu> {
         return new ItemStack(item, Math.max(1, count));
     }
 
+    private ItemStack getRequiredContainer(ItemStack result) {
+        return result.is(ElysiumHarvest.GINGER_TEA.get()) ? new ItemStack(Items.GLASS_BOTTLE) : new ItemStack(Items.BOWL);
+    }
+
     private int getPanelX() {
-        return this.leftPos - PANEL_WIDTH - BUTTON_WIDTH - BUTTON_GAP - PANEL_GAP;
+        return this.leftPos - PANEL_WIDTH - PANEL_GAP;
     }
 
     private int getPanelEntryX(int index) {
         int column = index % PANEL_COLUMNS;
-        return this.getPanelX() + 8 + column * (PANEL_ENTRY_SIZE + PANEL_ENTRY_GAP);
+        int contentWidth = PANEL_COLUMNS * PANEL_ENTRY_SIZE + (PANEL_COLUMNS - 1) * PANEL_ENTRY_GAP;
+        int leftPadding = (PANEL_WIDTH - contentWidth) / 2;
+        return this.getPanelX() + leftPadding + column * (PANEL_ENTRY_SIZE + PANEL_ENTRY_GAP);
     }
 
     private int getPanelEntryY(int index) {
