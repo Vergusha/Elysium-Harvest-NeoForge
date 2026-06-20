@@ -1,6 +1,0 @@
-{
-    "parent": "minecraft:block/crop",
-    "textures": {
-        "crop": "elysiumharvest:block/tomato_stage4"
-    }
-}

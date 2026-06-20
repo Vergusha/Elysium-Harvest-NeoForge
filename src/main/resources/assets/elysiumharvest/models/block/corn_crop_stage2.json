@@ -1,6 +1,51 @@
 {
-    "parent": "minecraft:block/crop",
-    "textures": {
-        "crop": "elysiumharvest:block/corn_stage2"
+  "render_type": "cutout",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "elysiumharvest:block/corn_stage2_bottom",
+    "top": "elysiumharvest:block/corn_stage2_top",
+    "bottom": "elysiumharvest:block/corn_stage2_bottom"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 8],
+      "to": [16, 16, 8],
+      "rotation": { "origin": [8, 0, 8], "axis": "y", "angle": 45 },
+      "shade": false,
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#bottom" },
+        "south": { "uv": [16, 0, 0, 16], "texture": "#bottom" }
+      }
+    },
+    {
+      "from": [0, 16, 8],
+      "to": [16, 32, 8],
+      "rotation": { "origin": [8, 16, 8], "axis": "y", "angle": 45 },
+      "shade": false,
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#top" },
+        "south": { "uv": [16, 0, 0, 16], "texture": "#top" }
+      }
+    },
+    {
+      "from": [0, 0, 8],
+      "to": [16, 16, 8],
+      "rotation": { "origin": [8, 0, 8], "axis": "y", "angle": -45 },
+      "shade": false,
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#bottom" },
+        "south": { "uv": [16, 0, 0, 16], "texture": "#bottom" }
+      }
+    },
+    {
+      "from": [0, 16, 8],
+      "to": [16, 32, 8],
+      "rotation": { "origin": [8, 16, 8], "axis": "y", "angle": -45 },
+      "shade": false,
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#top" },
+        "south": { "uv": [16, 0, 0, 16], "texture": "#top" }
+      }
     }
+  ]
 }
