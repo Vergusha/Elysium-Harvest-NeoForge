@@ -1,0 +1,31 @@
+﻿{
+    "parent":  "minecraft:recipes/root",
+    "criteria":  {
+                     "has_the_recipe":  {
+                                            "trigger":  "minecraft:recipe_unlocked",
+                                            "conditions":  {
+                                                               "recipe":  "elysiumharvest:cucumber_seeds_from_cucumber"
+                                                           }
+                                        },
+                     "has_ingredient":  {
+                                            "trigger":  "minecraft:inventory_changed",
+                                            "conditions":  {
+                                                               "items":  [
+                                                                             {
+                                                                                 "items":  [
+                                                                                               "elysiumharvest:cucumber"
+                                                                                           ]
+                                                                             }
+                                                                         ]
+                                                           }
+                                        }
+                 },
+    "rewards":  {
+                    "recipes":  [
+                                    "elysiumharvest:cucumber_seeds_from_cucumber"
+                                ]
+                },
+    "requirements": [["has_the_recipe", "has_ingredient"]]
+}
+
+

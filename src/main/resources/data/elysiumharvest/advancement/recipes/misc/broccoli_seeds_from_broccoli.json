@@ -1,0 +1,31 @@
+﻿{
+    "parent":  "minecraft:recipes/root",
+    "criteria":  {
+                     "has_the_recipe":  {
+                                            "trigger":  "minecraft:recipe_unlocked",
+                                            "conditions":  {
+                                                               "recipe":  "elysiumharvest:broccoli_seeds_from_broccoli"
+                                                           }
+                                        },
+                     "has_ingredient":  {
+                                            "trigger":  "minecraft:inventory_changed",
+                                            "conditions":  {
+                                                               "items":  [
+                                                                             {
+                                                                                 "items":  [
+                                                                                               "elysiumharvest:broccoli"
+                                                                                           ]
+                                                                             }
+                                                                         ]
+                                                           }
+                                        }
+                 },
+    "rewards":  {
+                    "recipes":  [
+                                    "elysiumharvest:broccoli_seeds_from_broccoli"
+                                ]
+                },
+    "requirements": [["has_the_recipe", "has_ingredient"]]
+}
+
+

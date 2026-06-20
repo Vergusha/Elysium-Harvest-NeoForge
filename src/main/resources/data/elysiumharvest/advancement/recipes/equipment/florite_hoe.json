@@ -1,0 +1,31 @@
+﻿{
+    "parent":  "minecraft:recipes/root",
+    "criteria":  {
+                     "has_the_recipe":  {
+                                            "trigger":  "minecraft:recipe_unlocked",
+                                            "conditions":  {
+                                                               "recipe":  "elysiumharvest:florite_hoe"
+                                                           }
+                                        },
+                     "has_ingredient":  {
+                                            "trigger":  "minecraft:inventory_changed",
+                                            "conditions":  {
+                                                               "items":  [
+                                                                             {
+                                                                                 "items":  [
+                                                                                               "elysiumharvest:florite_ingot"
+                                                                                           ]
+                                                                             }
+                                                                         ]
+                                                           }
+                                        }
+                 },
+    "rewards":  {
+                    "recipes":  [
+                                    "elysiumharvest:florite_hoe"
+                                ]
+                },
+    "requirements": [["has_the_recipe", "has_ingredient"]]
+}
+
+

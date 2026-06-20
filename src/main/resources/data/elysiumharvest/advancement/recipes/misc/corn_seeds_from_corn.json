@@ -1,0 +1,31 @@
+﻿{
+    "parent":  "minecraft:recipes/root",
+    "criteria":  {
+                     "has_the_recipe":  {
+                                            "trigger":  "minecraft:recipe_unlocked",
+                                            "conditions":  {
+                                                               "recipe":  "elysiumharvest:corn_seeds_from_corn"
+                                                           }
+                                        },
+                     "has_ingredient":  {
+                                            "trigger":  "minecraft:inventory_changed",
+                                            "conditions":  {
+                                                               "items":  [
+                                                                             {
+                                                                                 "items":  [
+                                                                                               "elysiumharvest:corn"
+                                                                                           ]
+                                                                             }
+                                                                         ]
+                                                           }
+                                        }
+                 },
+    "rewards":  {
+                    "recipes":  [
+                                    "elysiumharvest:corn_seeds_from_corn"
+                                ]
+                },
+    "requirements": [["has_the_recipe", "has_ingredient"]]
+}
+
+

@@ -1,0 +1,31 @@
+﻿{
+    "parent":  "minecraft:recipes/root",
+    "criteria":  {
+                     "has_the_recipe":  {
+                                            "trigger":  "minecraft:recipe_unlocked",
+                                            "conditions":  {
+                                                               "recipe":  "elysiumharvest:eggplant_seeds_from_eggplant"
+                                                           }
+                                        },
+                     "has_ingredient":  {
+                                            "trigger":  "minecraft:inventory_changed",
+                                            "conditions":  {
+                                                               "items":  [
+                                                                             {
+                                                                                 "items":  [
+                                                                                               "elysiumharvest:eggplant"
+                                                                                           ]
+                                                                             }
+                                                                         ]
+                                                           }
+                                        }
+                 },
+    "rewards":  {
+                    "recipes":  [
+                                    "elysiumharvest:eggplant_seeds_from_eggplant"
+                                ]
+                },
+    "requirements": [["has_the_recipe", "has_ingredient"]]
+}
+
+
